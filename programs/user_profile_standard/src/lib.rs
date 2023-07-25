@@ -32,7 +32,7 @@ pub struct CreateSocials  {
 #[derive(InitSpace)]
 pub struct Socials {
     #[max_len(300)]
-    pub linked_in:  String ,
+    pub linked_in: String ,
     #[max_len(300)]
     pub  x: String ,
     #[max_len(300)]
@@ -59,3 +59,4 @@ pub struct Profile {
     #[max_len(300)]
     pub website: String,  
 }
+
