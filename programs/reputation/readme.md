@@ -11,6 +11,7 @@ Reputation can be used for example to
     <li/>Confirm that a person has completed certain requirements</li>
  </ol>
 
+<img src="../../images/Reputation.png" width ="700px" height="600px">
 
 ## Thought crumbs 
 The concerpt is similar to proof of stake, you can particiate in certain activities given your stake,
