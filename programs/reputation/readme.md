@@ -7,8 +7,8 @@ Reputation can be used for example to
  <ol>
     <li/>confirm that the account belongs to a real person.</li>
     <li/>Confirm that a person is active in a cirtain community</li>
-    <li/>Confirm that a meets certain criteria</li>
-    <li/>Confirm that a person has completed certai requirements</li>
+    <li/>Confirm that a person meets certain criteria</li>
+    <li/>Confirm that a person has completed certain requirements</li>
  </ol>
 
 
