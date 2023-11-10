@@ -3,17 +3,15 @@ import { Program } from "@coral-xyz/anchor";
 import { PrivacyWrapper} from "../target/types/privacy_wrapper";
 
 // Configure the client to use the local cluster.
-	let provider = anchor.AnchorProvider.env();
+	const provider = anchor.AnchorProvider.env();
 	anchor.setProvider(provider);
 	const program = anchor.workspace.PrivacyWrapper as Program<PrivacyWrapper>;
-
-
+  
 
 describe('user_profile_standard', () => {	
    it('Initialized the from account !', async () => {
 			//create payer
 			let payer = provider.wallet as anchor.Wallet;
-
 			// Create from acount
 			const [from] = anchor.web3.PublicKey.findProgramAddressSync(
 				[Buffer.from('from'), payer.publicKey.toBuffer()],

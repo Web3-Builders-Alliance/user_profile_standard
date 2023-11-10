@@ -1,19 +1,25 @@
+[toolchain]
+
 [features]
 seeds = false
 skip-lint = false
+
 [programs.localnet]
-user_profile_standard = "FqmB85Gb6tJPYgft7iksH1F7K4CjYS42UbGcAANccWm5"
-privacy_wrapper = "D7bcA3YcB57at93NVtLYpQnpm1tqSL3EDDpJkuuWqoFh"
+privacy_wrapper = "3bYfZU3BrodZgf1SGNTttXyKUErudj1PwGG5mxyhghCD"
+reputation = "4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK"
+user_profile_standard = "9H9gdBjcCQwuzoikdYxtr8TSyTRVF8pWAPr2qZYjZ9rK"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
 cluster = "Localnet"
-wallet = "/home/professorcodegeek/.config/solana/id.json"
+wallet = "/home/victor/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 
 [test]
 startup_wait = 1000000
+shutdown_wait = 2000
+upgradeable = false

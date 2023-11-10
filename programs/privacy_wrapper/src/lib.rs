@@ -1,13 +1,13 @@
 use anchor_lang::prelude::*;
 
-declare_id!("D7bcA3YcB57at93NVtLYpQnpm1tqSL3EDDpJkuuWqoFh");
+declare_id!("3bYfZU3BrodZgf1SGNTttXyKUErudj1PwGG5mxyhghCD");
 
 #[program]
 pub mod privacy_wrapper {
     use super::*;
 
     pub fn initialize_user_five(ctx: Context<CreateUserFive>) -> Result<()> {  
-        ctx.accounts.from.one = NumberString::Num{num: 5} ;
+        ctx.accounts.from.one = NumberString::St{st: "dddddddddddddddd5".to_string()} ;
         ctx.accounts.from.two = NumberString::Num{num: 5} ;
         ctx.accounts.from.three = NumberString::Num{num: 5} ; 
         ctx.accounts.from.four = NumberString::Num{num: 5} ; 
@@ -32,6 +32,7 @@ pub mod privacy_wrapper {
     }
 
 }
+
 #[derive(Accounts)]
 pub struct CreateUserFive  <'info> {
     #[account(mut)]

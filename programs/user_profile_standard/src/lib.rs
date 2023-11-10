@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("FqmB85Gb6tJPYgft7iksH1F7K4CjYS42UbGcAANccWm5");
+declare_id!("9H9gdBjcCQwuzoikdYxtr8TSyTRVF8pWAPr2qZYjZ9rK");
 
 #[program]
 pub mod user_profile_standard {
@@ -19,7 +19,8 @@ pub mod user_profile_standard {
 
         ctx.accounts.profile.first_name = first_name ;
         ctx.accounts.profile.last_name = last_name ;
-
+        let profile = &mut ctx.accounts.profile ;
+        profile.to_account_info().assign(ctx.accounts.payer.key);
         Ok(())
     }
 
@@ -29,10 +30,11 @@ pub mod user_profile_standard {
 }
 
 #[derive(Accounts)]
+#[instruction(password: String)]
 pub struct CreateProfile  <'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(init, payer=payer, seeds=[b"profile", payer.key.as_ref()], bump, space = 8 + Profile::INIT_SPACE)]
+    #[account(init, payer=payer, seeds=[b"profile", password.as_bytes().as_ref()], bump, space = 8 + Profile::INIT_SPACE)]
     pub profile: Account<'info,Profile> ,
     pub system_program: Program<'info, System> ,
 }
