@@ -5,6 +5,7 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
+network = "8VsDQfLQ8GALJkDGFekW5Cx7RcSuA3vDKyU25VPFJMD4"
 privacy_wrapper = "3bYfZU3BrodZgf1SGNTttXyKUErudj1PwGG5mxyhghCD"
 reputation = "4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK"
 user_profile_standard = "9H9gdBjcCQwuzoikdYxtr8TSyTRVF8pWAPr2qZYjZ9rK"
