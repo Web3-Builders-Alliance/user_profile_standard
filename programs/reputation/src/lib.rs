@@ -10,8 +10,12 @@ pub mod reputation {
         ctx.accounts.reputation.attached_account = ctx.accounts.payer.key();
         Ok(())
     }
-    pub fn create_source_account(ctx: Context<CreateSource>, password : String, source_name: String ) -> Result<()> {
-        msg!("SOurce created");
+    pub fn create_source_account(ctx: Context<CreateSource>, password: String, source_name: String ) -> Result<()> {
+        ctx.accounts.source.points = 0 ;
+        ctx.accounts.source.name = source_name ;
+        ctx.accounts.reputation.sources_count = ctx.accounts.reputation.sources_count + 1 ;
+        // ctx.accounts.source.bump = ctx.bumps.
+        msg!("SOurce created");    
         Ok(())
     }
 }
@@ -21,10 +25,10 @@ pub mod reputation {
 pub struct CreateSource<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
-    #[account(seeds=[b"reputation", password.as_bytes().as_ref()], bump,)]
+    #[account(mut, seeds=[b"reputation", password.as_bytes().as_ref()], bump,)]
     reputation: Account<'info , Reputation> ,    
     #[account(init, payer=payer, seeds=[ source_name.as_bytes(), reputation.key().as_ref()], bump, space= 8 + Source::INIT_SPACE)]
-    source: Account<'info , Reputation> ,    
+    source: Account<'info , Source> ,    
     system_program: Program<'info, System>
 }
 

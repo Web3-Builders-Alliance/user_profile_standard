@@ -66,15 +66,15 @@ describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n'
 describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n', () => {
   it("creates source account", async ()=> {
     const secret = "addsources" ;
-    const source_name = "dummy" ;
+    const sourceName = "dummy" ;
     //create reputation account to use to create source account 
     const {tx , reputation} = await createRepAccount(secret);
     const rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
 
-    const {source, tx2 } = await createSourceAccount(reputation, secret ,source_name ) ;
-    console.log(`Created the user source account transaction link: ${tx}`);
+    const {source, tx2 } = await createSourceAccount(reputation, secret ,sourceName ) ;
+    console.log(`Created the user source account transaction link: ${tx2}`);
     console.log(`\n\nThe source account is:${source}\n`)
 
     const reloadRep  = await program.account.reputation.fetch(reputation);
@@ -83,6 +83,12 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     assert.equal(reloadRep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
 
     // source. 
+    const sc = await program.account.source.fetch(source);
+    console.log(`\nSource account name is: ${sc.name}\n`);
+    console.log(`\nSource points: ${sc.points}\n`);
+    assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
+    assert.equal(sc.points.toNumber(), 0 , "source points should be 0");
+
 
   })
 
