@@ -6,7 +6,7 @@ declare_id!("4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK");
 pub mod reputation {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn create_reputation_account(ctx: Context<Initialize>) -> Result<()> {
         Ok(())
     }
 }

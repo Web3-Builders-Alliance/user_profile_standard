@@ -20,7 +20,6 @@ pub mod user_profile_standard {
         ctx.accounts.profile.first_name = first_name ;
         ctx.accounts.profile.last_name = last_name ;
         let profile = &mut ctx.accounts.profile ;
-        profile.to_account_info().assign(ctx.accounts.payer.key);
         Ok(())
     }
 
