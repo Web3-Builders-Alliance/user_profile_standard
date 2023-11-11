@@ -6,6 +6,8 @@ declare_id!("4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK");
 pub mod reputation {
     use super::*;
     pub fn create_reputation_account(ctx: Context<Initialize>, password : String) -> Result<()> {
+        ctx.accounts.reputation.sources_count = 0 ;
+        ctx.accounts.reputation.attached_account = ctx.accounts.payer.key();
         Ok(())
     }
 }
@@ -19,11 +21,11 @@ pub struct Initialize<'info> {
     reputation: Account<'info , Reputation> ,    
     system_program: Program<'info, System>
 }
+
 #[account]
 #[derive(Default, InitSpace)]
 pub struct Reputation {
-    #[max_len(30)]
-    sources: String,
+    sources_count: u64 ,
     attached_account: Pubkey,
 }
 

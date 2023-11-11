@@ -30,13 +30,13 @@ describe('Create reputation account', () => {
       })
       .rpc();
 
-    console.log('\n\n\n ============= CREATE REPUTATION ACCOUNT  ===============\n\n\n');
+    console.log('\n\n\n ============= CREATE REPUTATION ACCOUNT  ===============\n\n');
     console.log(`Created the user reputation account transaction link: ${tx}`);
-    // const rep  = await program.account.reputation.fetch(reputation);
-    // console.log(`\nYour rep account is: ${rep}\n`);
-    //    assert.equal(rep.sourcers, [], 'sources are not empty') ;
-    //    assert.equal(rep.attachedAccount, payer, "publick key of attached account not same as payer");
-
+    const rep  = await program.account.reputation.fetch(reputation);
+    console.log(`\nSources count is : ${rep.sourcesCount.toString()}`);
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
   });
 
 })
