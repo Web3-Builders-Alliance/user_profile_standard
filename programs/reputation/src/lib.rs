@@ -10,6 +10,22 @@ pub mod reputation {
         ctx.accounts.reputation.attached_account = ctx.accounts.payer.key();
         Ok(())
     }
+    pub fn create_source_account(ctx: Context<CreateSource>, password : String, source_name: String ) -> Result<()> {
+        msg!("SOurce created");
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+#[instruction(password: String, source_name: String )]
+pub struct CreateSource<'info> {
+    #[account(mut)]
+    payer: Signer<'info> ,
+    #[account(seeds=[b"reputation", password.as_bytes().as_ref()], bump,)]
+    reputation: Account<'info , Reputation> ,    
+    #[account(init, payer=payer, seeds=[ source_name.as_bytes(), reputation.key().as_ref()], bump, space= 8 + Source::INIT_SPACE)]
+    source: Account<'info , Reputation> ,    
+    system_program: Program<'info, System>
 }
 
 #[derive(Accounts)]
@@ -27,5 +43,13 @@ pub struct Initialize<'info> {
 pub struct Reputation {
     sources_count: u64 ,
     attached_account: Pubkey,
+}
+
+#[account]
+#[derive(Default, InitSpace)]
+pub struct Source {
+    points : u64 ,
+    #[max_len(50)]
+    name : String,
 }
 
