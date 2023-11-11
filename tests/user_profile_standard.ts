@@ -56,7 +56,4 @@ describe('user_profile_standard', () => {
 })
 
 
-describe('user_profile_standard', () => {
-})
-
 

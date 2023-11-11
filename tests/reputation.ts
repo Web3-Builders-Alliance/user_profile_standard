@@ -8,7 +8,7 @@ anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 
 
-describe('user_profile_standard', () => {	
+describe('Create reputation account', () => {	
   it('Initializes User reputation account !', async () => {
     //create payerd
     const payer = provider.wallet as anchor.Wallet;
@@ -22,10 +22,11 @@ describe('user_profile_standard', () => {
 
     const tx = await program.methods
       .createReputationAccount(
+        secret
       )
       .accounts({
         reputation,
-        payer
+        payer: payer.payer.publicKey
       })
       .rpc();
 
