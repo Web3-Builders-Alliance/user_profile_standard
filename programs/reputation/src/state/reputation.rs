@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use crate::errors::ReputationError;
 #[account]
 #[derive(Default, InitSpace)]
 pub struct Reputation {
@@ -12,11 +13,17 @@ impl Reputation {
         Ok(())
     }
     pub fn add_source(&mut self,) -> Result<()> {
-        self.sources_count= self.sources_count.checked_add(1).unwrap();
+        self.sources_count= match  self.sources_count.checked_add(1){
+            Some(v) => v,
+            None => return err!(ReputationError::SumLimmit)
+        };
         Ok(())
     }
     pub fn remove_source(&mut self) -> Result<()> {
-        self.sources_count= self.sources_count.checked_sub(1).unwrap() ;
+        self.sources_count= match self.sources_count.checked_sub(1) {
+            Some(v) => v ,
+            None => return err!(ReputationError::SumLimmit)
+        };
         Ok(())
     }
 }

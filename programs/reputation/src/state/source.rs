@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use crate::errors::ReputationError;
 #[account]
 #[derive(Default, InitSpace)]
 pub struct Source {
@@ -17,11 +18,17 @@ impl Source {
         Ok(())
     }
     pub fn add_points (&mut self, bonus: u8)-> Result<()> {
-        self.points =  self.points.checked_add(bonus).unwrap();
+        self.points = match self.points.checked_add(bonus){
+            Some(v) => v,
+            None => return err!(ReputationError::SubtrationLimmit),
+        };
         Ok(())
     }
     pub fn subtract_points (&mut self, penalty: u8)-> Result<()> {
-        self.points = self.points.checked_sub(penalty).unwrap(); 
+        self.points = match self.points.checked_sub(penalty) { 
+            Some(v) => v,
+            None => return err!(ReputationError::SubtrationLimmit)
+        };
         Ok(())
     }
 }

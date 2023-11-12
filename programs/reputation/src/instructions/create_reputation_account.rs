@@ -1,10 +1,8 @@
 use anchor_lang::prelude::*;
 use crate::state::reputation::Reputation;
-
 pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
     ctx.accounts.reputation.create(ctx.accounts.payer.key())
 }
-
 #[derive(Accounts)]
 #[instruction()]
 pub struct CreateReputation<'info> {
