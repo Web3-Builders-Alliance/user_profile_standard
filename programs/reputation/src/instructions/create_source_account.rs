@@ -14,7 +14,8 @@ pub fn create_source_account(ctx: Context<CreateSource>, source_name: String ) -
 pub struct CreateSource<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
-    #[account(mut, seeds=[b"reputation", payer.key().as_ref()], bump,)]
+    authority: SystemAccount<'info>,
+    #[account(mut, seeds=[b"reputation", authority.key().as_ref()], bump,)]
     reputation: Account<'info , Reputation> ,    
     #[account(init, payer=payer, seeds=[b"source", source_name.as_bytes(), reputation.key().as_ref()], bump, space= 8 + Source::INIT_SPACE)]
     source: Account<'info , Source> ,    
