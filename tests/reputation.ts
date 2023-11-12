@@ -19,7 +19,7 @@ const addPoints = async (bonus: number, source: anchor.web3.PublicKey, sourceNam
   const tx3 = await program.methods
     .addReputation(
      sourceName,
-     new anchor.BN(bonus)
+     bonus
     )
     .accounts({
       reputation,
@@ -35,7 +35,7 @@ const subtractPoints = async (penalty: number, source: anchor.web3.PublicKey, so
   const tx4 = await program.methods
     .subtractReputation(
       sourceName,
-      new anchor.BN(penalty)
+      penalty
     )
     .accounts({
       reputation,
@@ -112,7 +112,7 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     console.log(`\nSource account name is: ${sc.name}\n`);
     console.log(`\nSource points: ${sc.points}\n`);
     assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
-    assert.equal(sc.points.toNumber(), 0 , "source points should be 0");
+    assert.equal(sc.points, 0 , "source points should be 0");
   })
 
 })
@@ -136,7 +136,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     // source. 
     const sc = await program.account.source.fetch(source);
     assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
-    assert.equal(sc.points.toNumber(), 0 , "source points should be 0");
+    assert.equal(sc.points, 0 , "source points should be 0");
 
     const bonus = 3 ;
     const {tx3} = await addPoints(bonus, source, sourceName) ;
@@ -144,7 +144,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`Added reputation transaction link: ${tx3}`);
     console.log(`\nSource points now equal : ${sc2.points.toString()}\n`);
     assert.equal(sc2.name , sourceName , `source name should be ${sourceName}`) ;
-    assert.equal(sc2.points.toNumber(), 3 , "source points should be 3");
+    assert.equal(sc2.points, 3 , "source points should be 3");
 
     const penalty = 1 ;
 
@@ -153,9 +153,8 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`\nSource points now equal : ${sc3.points.toString()}\n`);
     console.log(`Removed reputation transaction link: ${tx4}`);
     assert.equal(sc3.name , sourceName , `source name should be ${sourceName}`) ;
-    assert.equal(sc3.points.toNumber(), 2 , "source points should be 2");
+    assert.equal(sc3.points, 2 , "source points should be 2");
 
   })
-
 
 })
