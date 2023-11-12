@@ -5,7 +5,15 @@ declare_id!("4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK");
 #[program]
 pub mod reputation {
     use super::*;
-    pub fn create_reputation_account(ctx: Context<Initialize>, ) -> Result<()> {
+
+    pub fn initialize_reputation_program_account(ctx: Context<Initialize>, ) -> Result<()> {
+        ctx.accounts.data.reputation_accounts_tally = 0 ;
+        ctx.accounts.data.sources_tally = 0 ;
+        ctx.accounts.data.initializer = ctx.accounts.payer.key() ;
+        Ok(())
+    }
+
+    pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
         ctx.accounts.reputation.sources_count = 0 ;
         ctx.accounts.reputation.attached_account = ctx.accounts.payer.key();
         Ok(())
@@ -26,6 +34,18 @@ pub mod reputation {
         ctx.accounts.source.points = ctx.accounts.source.points - penalty ;
         Ok(())
     } 
+}
+
+
+#[derive(Accounts)]
+#[instruction(source_name: String )]
+pub struct Initialize<'info> {
+    #[account(mut)]
+    payer: Signer<'info> ,
+    //program dump account 
+    #[account(init, payer=payer, seeds=[b"rep_program"], bump, space= 8 + ReputationData::INIT_SPACE)]
+    data: Account<'info,ReputationData>,
+    system_program: Program<'info, System>
 }
 
 #[derive(Accounts)]
@@ -53,13 +73,22 @@ pub struct CreateSource<'info> {
 
 #[derive(Accounts)]
 #[instruction()]
-pub struct Initialize<'info> {
+pub struct CreateReputation<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
     #[account(init, payer=payer, seeds=[b"reputation",payer.key().as_ref()], bump, space= 8 + Reputation::INIT_SPACE)]
     reputation: Account<'info , Reputation> ,    
     system_program: Program<'info, System>
 }
+
+#[account]
+#[derive(Default, InitSpace)]
+pub struct ReputationData {
+    reputation_accounts_tally: u64 ,
+    sources_tally:u64,
+    initializer: Pubkey ,
+}
+
 
 #[account]
 #[derive(Default, InitSpace)]

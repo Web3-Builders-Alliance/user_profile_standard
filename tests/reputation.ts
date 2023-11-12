@@ -7,7 +7,6 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 
-
 const payer = provider.wallet as anchor.Wallet;
 // const secret = "password" 
 const [reputation] = anchor.web3.PublicKey.findProgramAddressSync(
