@@ -15,7 +15,7 @@ const payer = provider.wallet as anchor.Wallet;
 
 describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
-     //create payerd
+    //create payerd
     const {tx,reputation} = await createRepAccount(payer.payer.publicKey,payer.payer.publicKey);
     console.log(`Created the user reputation account transaction link: ${tx}`);
     const rep  = await program.account.reputation.fetch(reputation);
@@ -73,7 +73,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
 
     const {source, tx2 } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
     console.log(`Created the user source account transaction link: ${tx2}`);
-    console.log(`\n\nThe source account is:${source}\n`)
+    console.log(`\nThe source account is:${source}\n`)
 
     const reloadRep  = await program.account.reputation.fetch(reputation);
     console.log(`\nThe user source count is now:${reloadRep.sourcesCount.toNumber()}\n`)
@@ -103,6 +103,40 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`Removed reputation transaction link: ${tx4}`);
     assert.equal(sc3.name , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sc3.points, 2 , "source points should be 2");
+
+  })
+})
+
+describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\n\n', () => {
+  it("Adds and subtracts points from source accounts", async ()=> {
+    const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
+    const authority = new anchor.web3.Keypair()
+
+    //create reputation account to use to create source account 
+    const {tx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+
+    for (const sourceName of  sourceNames) {
+      const {source, tx2 } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
+      console.log(`Created the user source account transaction link: ${tx2}`);
+      console.log(`\nThe source account is:${source}\n`)
+      // source. 
+      const sc = await program.account.source.fetch(source);
+      console.log(`\nSource account name is: ${sc.name}\n`);
+      console.log(`\nSource points: ${sc.points}\n`);
+      assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
+      assert.equal(sc.points, 0 , "source points should be 0");
+    }
+
+    //search for all user source accounts 
+    console.log("\ncan search for all the created user source accounts\n");
+    const accounts = await program.account.source.all([{memcmp:{
+      offset: 8,
+      bytes: authority.publicKey.toBase58()
+    }}]) ;
+
+    for (const account of accounts) {
+      console.log(`${account.account.name}`)
+    }
 
   })
 })
