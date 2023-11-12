@@ -14,7 +14,7 @@ pub struct UpdateSource<'info> {
     authority: SystemAccount<'info>,
     #[account(mut, seeds=[b"reputation", authority.key().as_ref()], bump,)]
     reputation: Account<'info , Reputation> ,    
-    #[account(mut,seeds=[b"source", source_name.as_bytes(), authority.key().as_ref()],bump)]
+    #[account(mut, has_one=reputation,seeds=[b"source", source_name.as_bytes(), authority.key().as_ref()],bump)]
     source: Account<'info , Source> ,    
 }
 
