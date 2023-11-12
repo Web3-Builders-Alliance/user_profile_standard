@@ -1,19 +1,15 @@
 use instructions::* ;
 use anchor_lang::prelude::*;
-
 pub mod instructions ;
 pub mod state;
 // pub mod error ;
 declare_id!("4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK");
-
 #[program]
 pub mod reputation {
     use super::*;
-
     pub fn initialize_reputation_program_account(ctx: Context<Initialize>, ) -> Result<()> {
         instructions::initialize_reputation_program_account::initialize_reputation_program_account(ctx)
     }
-
     pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
         instructions::create_reputation_account::create_reputation_account(ctx)
     }
@@ -27,3 +23,4 @@ pub mod reputation {
         instructions::update_reputation::subtract_reputation(ctx,source_name, penalty)
     } 
 }
+

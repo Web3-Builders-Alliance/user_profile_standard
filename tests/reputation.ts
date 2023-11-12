@@ -6,13 +6,10 @@ import {createSourceAccount} from "./instructions/createSourceAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
 import {addPoints} from "./instructions/addPoints"
 import {subtractPoints} from "./instructions/subtractPoints"
-
 const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
-
 const payer = provider.wallet as anchor.Wallet;
-
 describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
     //create payerd
@@ -25,7 +22,6 @@ describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n'
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
   });
 })
-
 describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n', () => {
   it("creates source account", async ()=> {
     const sourceName = "dummy" ;
@@ -57,12 +53,10 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
   })
 })
 
-
 describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n', () => {
   it("Adds and subtracts points from source accounts", async ()=> {
     const sourceName = "dummy2" ;
     const authority = new anchor.web3.Keypair()
-
     //create reputation account to use to create source account 
     const {tx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${tx}`);
@@ -86,7 +80,6 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`\nSource points: ${sc.points}\n`);
     assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sc.points, 0 , "source points should be 0");
-
     const bonus = 3 ;
     const {tx3} = await addPoints(bonus, source,payer.payer.publicKey,authority.publicKey,reputation, sourceName) ;
     const sc2 = await program.account.source.fetch(source);
@@ -94,9 +87,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`\nSource points now : ${sc2.points.toString()}\n`);
     assert.equal(sc2.name , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sc2.points, 3 , "source points should be 3");
-
     const penalty = 1 ;
-
     const {tx4} = await subtractPoints(penalty,source,payer.payer.publicKey,authority.publicKey,reputation,sourceName) ;
     const sc3 = await program.account.source.fetch(source);
     console.log(`\nSource points now equal : ${sc3.points.toString()}\n`);
@@ -106,15 +97,12 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
 
   })
 })
-
 describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\n\n', () => {
   it("Adds and subtracts points from source accounts", async ()=> {
     const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
     const authority = new anchor.web3.Keypair()
-
     //create reputation account to use to create source account 
     const {tx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
-
     for (const sourceName of  sourceNames) {
       const {source, tx2 } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
       console.log(`Created the user source account transaction link: ${tx2}`);
@@ -126,14 +114,12 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
       assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
       assert.equal(sc.points, 0 , "source points should be 0");
     }
-
     //search for all user source accounts 
     console.log("\ncan search for all the created user source accounts\n");
     const accounts = await program.account.source.all([{memcmp:{
       offset: 8,
       bytes: authority.publicKey.toBase58()
     }}]) ;
-
     for (const account of accounts) {
       console.log(`${account.account.name}`)
     }
