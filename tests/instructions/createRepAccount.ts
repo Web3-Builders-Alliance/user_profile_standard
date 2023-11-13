@@ -13,7 +13,7 @@ export const createRepAccount =  async (
     program.programId
   );
   // Create reputation account
-  const tx = await program.methods
+  const createRepTx = await program.methods
     .createReputationAccount(
     )
     .accounts({
@@ -22,6 +22,5 @@ export const createRepAccount =  async (
       payer 
     })
     .rpc();
-  return {tx, reputation} 
+  return {createRepTx, reputation} 
 }
-

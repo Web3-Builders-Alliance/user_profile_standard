@@ -1,10 +1,9 @@
 use anchor_lang::prelude::*;
 use crate::state::source_data::* ;
 
-pub fn initialize_source_data_account (ctx: Context<InitializeSourceData>) -> Result<()> {
+pub fn initialize_source_data_account (ctx: Context<InitializeSourceData>,source_name: String) -> Result<()> {
     Ok(())
 } 
-
 #[derive(Accounts)]
 #[instruction(source_name: String )]
 pub struct InitializeSourceData<'info> {

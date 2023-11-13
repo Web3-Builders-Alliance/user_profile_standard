@@ -15,7 +15,7 @@ export const createSourceAccount = async (
     [Buffer.from('source'), Buffer.from(sourceName),authority.toBuffer()],
     program.programId
   );
-  const tx2 = await program.methods
+  const createSourceTx = await program.methods
     .createSourceAccount(
       sourceName,
     )
@@ -26,6 +26,5 @@ export const createSourceAccount = async (
       payer,
     })
     .rpc();
-  return { source , tx2 } 
+  return { source , createSourceTx} 
 }
-

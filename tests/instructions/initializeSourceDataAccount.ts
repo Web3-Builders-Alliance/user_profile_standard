@@ -4,26 +4,25 @@ import {Reputation } from "../../target/types/reputation"
 const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
-export const subtractPoints = async (
-  penalty: number,
-  source: anchor.web3.PublicKey,
+export const initializeSourceDataAccount = async (
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
-  reputation:anchor.web3.PublicKey,
   sourceName: string
 ) => {
-  // Create reputation account
-  const subtractPointsTx = await program.methods
-    .subtractReputation(
-      sourceName,
-      penalty
+  // Create source account
+  const [sourceData] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from('source_data'), Buffer.from(sourceName)],
+    program.programId
+  );
+  const sourceDataTx = await program.methods
+    .initializeSourceDataAccount(
+      sourceName
     )
     .accounts({
+      sourceData,
       authority,
-       reputation,
-      source,
-      payer
+      payer,
     })
     .rpc();
-  return {subtractPointsTx} 
+  return { sourceData , sourceDataTx } 
 }

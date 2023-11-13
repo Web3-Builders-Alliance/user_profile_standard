@@ -13,7 +13,7 @@ export const addPoints  = async (
   sourceName: string
 ) => {
   // Create reputation account
-  const tx3 = await program.methods
+  const addPointstx = await program.methods
     .addReputation(
       sourceName,
       bonus
@@ -25,6 +25,5 @@ export const addPoints  = async (
       payer
     })
     .rpc();
-  return {tx3} 
+  return {addPointstx} 
 }
-

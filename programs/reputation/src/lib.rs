@@ -11,8 +11,8 @@ pub mod reputation {
     pub fn initialize_reputation_program_account(ctx: Context<Initialize>, ) -> Result<()> {
         instructions::initialize_reputation_program_account::initialize_reputation_program_account(ctx)
     }
-    pub fn initialize_source_data_account(ctx: Context<InitializeSourceData>) -> Result<()> {
-        instructions::initialize_source_data_account::initialize_source_data_account(ctx)
+    pub fn initialize_source_data_account(ctx: Context<InitializeSourceData>, source_name:String) -> Result<()> {
+        instructions::initialize_source_data_account::initialize_source_data_account(ctx,source_name)
     }
     pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
         instructions::create_reputation_account::create_reputation_account(ctx)
