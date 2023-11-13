@@ -101,7 +101,7 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
   it("Adds and subtracts points from source accounts", async ()=> {
     const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
     const authority = new anchor.web3.Keypair()
-    //create reputation account to use to create source account 
+    //create reputation account to use to create source ac.toString)
     const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
     for (const sourceName of  sourceNames) {
       const {source, createSourceTx } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
@@ -131,15 +131,15 @@ describe("\n\n\n=========== Creates Source Data Account =============\n\n\n", ()
     const authority = new anchor.web3.Keypair()
     const {sourceDataTx,sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
     console.log(`created source data account: ${sourceDataTx}`)
-      console.log(`\nThe source data account is:${sourceData}\n`)
+    console.log(`\nThe source data account is:${sourceData}\n`)
       // source. 
-      const sd = await program.account.sourceData.fetch(sourceData);
-      console.log(`\nSource account name is: ${sd.sourceName}\n`);
+    const sd = await program.account.sourceData.fetch(sourceData);
+    console.log(`\nSource account name is: ${sd.sourceName}\n`);
       console.log(`\nSource points: ${sd.sourceCount}\n`);
-      console.log(`\nSource points: ${sd.sourceAuthority}\n`);
+      console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
       assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
       assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
-      assert.equal(sd.sourceAuthority, authority.publicKey , `source authority should be ${authority} `);
+      assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
   })  
 })
 describe("\n\n\n=========== Deletes User Accounts =============\n\n\n", () => {

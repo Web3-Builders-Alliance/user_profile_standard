@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use crate::state::source_data::* ;
 
 pub fn initialize_source_data_account (ctx: Context<InitializeSourceData>,source_name: String) -> Result<()> {
-    Ok(())
+    ctx.accounts.source_data.create(source_name, ctx.accounts.authority.key())     
 } 
 #[derive(Accounts)]
 #[instruction(source_name: String )]
