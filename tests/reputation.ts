@@ -131,6 +131,15 @@ describe("\n\n\n=========== Creates Source Data Account =============\n\n\n", ()
     const authority = new anchor.web3.Keypair()
     const {sourceDataTx,sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
     console.log(`created source data account: ${sourceDataTx}`)
+      console.log(`\nThe source data account is:${sourceData}\n`)
+      // source. 
+      const sd = await program.account.sourceData.fetch(sourceData);
+      console.log(`\nSource account name is: ${sd.sourceName}\n`);
+      console.log(`\nSource points: ${sd.sourceCount}\n`);
+      console.log(`\nSource points: ${sd.sourceAuthority}\n`);
+      assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
+      assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
+      assert.equal(sd.sourceAuthority, authority.publicKey , `source authority should be ${authority} `);
   })  
 })
 describe("\n\n\n=========== Deletes User Accounts =============\n\n\n", () => {

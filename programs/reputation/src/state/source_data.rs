@@ -5,7 +5,8 @@ use anchor_lang::prelude::*;
 pub struct SourceData{
     #[max_len(30)]
     source_name: String ,
-    source_count: Pubkey,
+    source_authority:Pubkey ,
+    source_count: u64,
 }
 impl SourceData{
 
