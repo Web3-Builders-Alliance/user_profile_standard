@@ -26,7 +26,7 @@ This is an account that stores user source data, how many points a user has for 
 source.(multiple per user)
 
 ## Reputation 
-this is an account 1 per user that that stores meta data for the user source accounts 
+This is an account 1 per user that that stores meta data for the user source accounts 
 
 ## Thought crumbs 
 Participate in certain activities given your stake,

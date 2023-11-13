@@ -52,7 +52,6 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     assert.equal(sc.points, 0 , "source points should be 0");
   })
 })
-
 describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n', () => {
   it("Adds and subtracts points from source accounts", async ()=> {
     const sourceName = "dummy2" ;
@@ -123,6 +122,5 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
     for (const account of accounts) {
       console.log(`${account.account.name}`)
     }
-
   })
 })
