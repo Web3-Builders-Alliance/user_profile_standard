@@ -13,10 +13,25 @@ Reputation can be used for example to
 
 <img src="../../images/Reputation.png" width ="700px" height="600px">
 
+## Reputation data
+This is a single account that tallies the number of solana keypairs attached to reputation accounts 
+a reputation.(one account)
+
+## Source data
+This is an account that is created by programs that want to supply sources for user credits
+Multiple of these accounts exist and each one stores meta data for each source.(multiple sources one per source)
+
+## Source
+This is an account that stores user source data, how many points a user has for a particular 
+source.(multiple per user)
+
+## Reputation 
+this is an account 1 per user that that stores meta data for the user source accounts 
+
 ## Thought crumbs 
-The concerpt is similar to proof of stake, you can particiate in certain activities given your stake,
+Participate in certain activities given your stake,
 you are allowed into certain experiences based on your reputation.
-In proof of stake you have to buy tokens, reputation protocol uses activity, tags from other people,
+Reputation protocol uses activity, tags from other people,
 and other custom, reputation building activities that users can create.
 
 ### Reputation token
