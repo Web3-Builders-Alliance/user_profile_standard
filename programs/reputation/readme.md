@@ -33,6 +33,9 @@ Participate in certain activities given your stake,
 you are allowed into certain experiences based on your reputation.
 Reputation protocol uses activity, tags from other people,
 and other custom, reputation building activities that users can create.
+All reputation accounts are horizontal and do not use hash map like hierachy 
+this allow the accounts to be used by other programs without requiring a chain of 
+dependent accounts to derive the address.
 
 ### Reputation token
 This is a token that you can buy to quickly build your reputation.
