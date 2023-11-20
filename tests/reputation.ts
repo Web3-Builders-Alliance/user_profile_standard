@@ -183,7 +183,7 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
     assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
     const {deleteSourceDataTx} = await deleteSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
-      console.log(`Deleted the  account transaction link: ${deleteSourceDataTx}`);
+      console.log(`\n\nDeleted the  account transaction link: ${deleteSourceDataTx}`);
     try { 
       await program.account.sourceData.fetch(sourceData); 
       throw("Not deleted")
@@ -191,7 +191,7 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
       if (error==="Not deleted"){
         throw(error)
       }
-      console.log("successfully deleted")
+      console.log("\nsuccessfully deleted\n")
     }
   })  
 })

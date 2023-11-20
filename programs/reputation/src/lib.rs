@@ -14,6 +14,9 @@ pub mod reputation {
     pub fn initialize_source_data_account(ctx: Context<InitializeSourceData>, source_name:String) -> Result<()> {
         instructions::initialize_source_data_account::initialize_source_data_account(ctx,source_name)
     }
+    pub fn delete_source_data_account(ctx:Context<UpdateSourceData>,source_name:String) -> Result<()> {
+        instructions::delete_source_data_account::delete_source_data_account(ctx,source_name)
+    }
     pub fn create_source_account(ctx: Context<CreateSource>, source_name: String ) -> Result<()> {
         instructions::create_source_account::create_source_account(ctx, source_name) 
     }
