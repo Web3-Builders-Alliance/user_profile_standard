@@ -1,11 +1,11 @@
 use anchor_lang::prelude::*;
 use crate::state::{reputation::Reputation,reputation_data::ReputationData};
-pub fn delete_reputation_account(_ctx: Context<UpdateReputation>, ) -> Result<()> {
+pub fn delete_reputation_account(_ctx: Context<DeleteReputation>, ) -> Result<()> {
     Ok(())
 }
 #[derive(Accounts)]
 #[instruction()]
-pub struct UpdateReputation<'info> {
+pub struct DeleteReputation<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
     authority: SystemAccount<'info>,

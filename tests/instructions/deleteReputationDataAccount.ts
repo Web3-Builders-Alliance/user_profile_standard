@@ -5,11 +5,11 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 export const deleteReputationDataAccount =  async (
-  data: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
+  data: anchor.web3.PublicKey,
 ) => {
   // Create reputation account
-  const deleteRepTx = await program.methods
+  const deleteReputationDataTx = await program.methods
     .deleteReputationDataAccount(
     )
     .accounts({
@@ -17,6 +17,6 @@ export const deleteReputationDataAccount =  async (
       payer 
     })
     .rpc();
-  return {deleteRepTx} 
+  return {deleteReputationDataTx} 
 }
 

@@ -4,7 +4,7 @@ use anchor_lang::prelude::* ;
 pub struct ReputationData {
     reputation_accounts_tally: u64 ,
     sources_tally:u64,
-    initializer: Pubkey ,
+    pub initializer: Pubkey ,
 }
 impl ReputationData {
     pub fn create (&mut self,initializer: Pubkey) -> Result<()> {
