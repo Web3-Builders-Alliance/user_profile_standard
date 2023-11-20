@@ -5,13 +5,14 @@ import {Reputation } from "../target/types/reputation"
 import {createSourceAccount} from "./instructions/createSourceAccount"
 import {initializeSourceDataAccount} from "./instructions/initializeSourceDataAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
+import {deleteRepAccount} from "./instructions/deleteRepAccount"
 import {addPoints} from "./instructions/addPoints"
 import {subtractPoints} from "./instructions/subtractPoints"
 const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 const payer = provider.wallet as anchor.Wallet;
-describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n', () => {	
+describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
     //create payerd
     const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,payer.payer.publicKey);
@@ -21,6 +22,20 @@ describe('\n\n\n============== CREATE REPUTATION ACCOUNT  =================\n\n'
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+  });
+})
+describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================\n\n', () => {	
+  it('Deletes User reputation account !', async () => {
+    //create payerd
+    const {reputation} = await createRepAccount(payer.payer.publicKey,payer.payer.publicKey);
+    const rep  = await program.account.reputation.fetch(reputation);
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+
+    const {deleteRepTx} = await deleteRepAccount(payer.payer.publicKey, payer.payer.publicKey);
+    const reloadedRep =  await program.account.reputation.fetch(reputation); 
+    console.log("no more rep account, " , reloadedRep)
+
   });
 })
 describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n', () => {
