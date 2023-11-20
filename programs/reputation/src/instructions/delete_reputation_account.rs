@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use crate::state::reputation::Reputation;
+use crate::state::{reputation::Reputation,reputation_data::ReputationData};
 pub fn delete_reputation_account(_ctx: Context<UpdateReputation>, ) -> Result<()> {
     Ok(())
 }
@@ -11,6 +11,8 @@ pub struct UpdateReputation<'info> {
     authority: SystemAccount<'info>,
     #[account(mut,close=payer,seeds=[b"reputation",authority.key().as_ref()], bump, )]
     reputation: Account<'info , Reputation> ,    
+    #[account(mut,seeds=[b"reputation_data"], bump,)]
+    data: Account<'info,ReputationData>,
     system_program: Program<'info, System>
 }
 
