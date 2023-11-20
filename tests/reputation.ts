@@ -24,20 +24,6 @@ describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
   });
 })
-describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================\n\n', () => {	
-  it('Deletes User reputation account !', async () => {
-    //create payerd
-    const {reputation} = await createRepAccount(payer.payer.publicKey,payer.payer.publicKey);
-    const rep  = await program.account.reputation.fetch(reputation);
-    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
-    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
-
-    const {deleteRepTx} = await deleteRepAccount(payer.payer.publicKey, payer.payer.publicKey);
-    const reloadedRep =  await program.account.reputation.fetch(reputation); 
-    console.log("no more rep account, " , reloadedRep)
-
-  });
-})
 describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n', () => {
   it("creates source account", async ()=> {
     const sourceName = "dummy" ;
@@ -112,6 +98,37 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
 
   })
 })
+describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================\n\n', () => {	
+  it('Deletes User reputation account !', async () => {
+    const sourceName = "deletes" ;
+    const authority = new anchor.web3.Keypair()
+    const {reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const rep  = await program.account.reputation.fetch(reputation);
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    //update reputation account with new source
+    const {source, createSourceTx} = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName,);
+    const sc = await program.account.source.fetch(source);
+    assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
+    assert.equal(sc.points, 0 , "source points should be 0");
+    const reloadRep  = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user source count is now:${reloadRep.sourcesCount.toNumber()}\n`)
+    assert.equal(reloadRep.sourcesCount.toNumber(), 1 , 'source count should be one');
+    assert.equal(reloadRep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    const {deleteRepTx} = await deleteRepAccount(payer.payer.publicKey, authority.publicKey);
+    console.log(`Deleted the user reputation account transaction link: ${deleteRepTx}`);
+    try { 
+      await program.account.reputation.fetch(reputation); 
+      throw("Not deleted")
+    }catch(error) {
+      if (error==="Not deleted"){
+        throw(error)
+      }
+      console.log("successfully deleted", error)
+    }
+
+  });
+})
 describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\n\n', () => {
   it("Adds and subtracts points from source accounts", async ()=> {
     const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
@@ -147,16 +164,16 @@ describe("\n\n\n=========== Creates Source Data Account =============\n\n\n", ()
     const {sourceDataTx,sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
     console.log(`created source data account: ${sourceDataTx}`)
     console.log(`\nThe source data account is:${sourceData}\n`)
-      // source. 
+    // source. 
     const sd = await program.account.sourceData.fetch(sourceData);
     console.log(`\nSource account name is: ${sd.sourceName}\n`);
-      console.log(`\nSource points: ${sd.sourceCount}\n`);
-      console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
-      assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
-      assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
-      assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
+    console.log(`\nSource points: ${sd.sourceCount}\n`);
+    console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
+    assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
+    assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
+    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
   })  
 })
 describe("\n\n\n=========== Deletes User Accounts =============\n\n\n", () => {
-  
+
 })

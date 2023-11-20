@@ -14,7 +14,7 @@ export const deleteRepAccount =  async (
   );
   // Create reputation account
   const deleteRepTx = await program.methods
-    .createReputationAccount(
+    .deleteReputationAccount(
     )
     .accounts({
       authority,
