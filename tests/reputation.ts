@@ -183,7 +183,7 @@ describe('\n\n\n============== UPDATE USER REPUTATION ACCOUNT  =================
     const rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
-    const {updatedAttachedAccountTx} = await updateAttachedAccount(payer.payer.publicKey,newAuthority.publicKey,reputation);          
+    const {updatedAttachedAccountTx} = await updateAttachedAccount(payer.payer.publicKey,authority.publicKey,newAuthority.publicKey,reputation);          
   })
 })	
 describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================\n\n', () => {	

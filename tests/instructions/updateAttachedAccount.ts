@@ -7,11 +7,13 @@ const program = anchor.workspace.Reputation as Program<Reputation>;
 export const updateAttachedAccount =  async (
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
+  newAuthority: anchor.web3.PublicKey,
   reputation: anchor.web3.PublicKey
 ) => {
   // Create reputation account
   const updatedAttachedAccountTx = await program.methods
     .UpdateAttachedAccount(
+      newAuthority,
     )
     .accounts({
       authority,

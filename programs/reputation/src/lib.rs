@@ -29,9 +29,9 @@ pub mod reputation {
     pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
         instructions::create_reputation_account::create_reputation_account(ctx)
     }
-    // pub fn change_reputation_attached_account(ctx: Context<UpdateReputation>, new_authority: Pubkey) -> Result<()>{
-    //     instructions::change_reputation_attached_account::change_reputation_attached_account(ctx, new_authority)
-    // }
+    pub fn change_reputation_attached_account(ctx: Context<UpdateReputation>, new_authority: Pubkey) -> Result<()>{
+        instructions::change_reputation_attached_account::change_reputation_attached_account(ctx, new_authority)
+    }
     pub fn delete_reputation_account(ctx: Context<DeleteReputation>) -> Result<()> {
         instructions::delete_reputation_account::delete_reputation_account(ctx)
     } 
