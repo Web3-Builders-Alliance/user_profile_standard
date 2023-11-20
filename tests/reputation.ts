@@ -9,6 +9,7 @@ import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
 import {initializeReputationDataAccount} from "./instructions/initializeReputationDataAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
 import {deleteRepAccount} from "./instructions/deleteRepAccount"
+import {deleteReputationDataAccount} from "./instructions/deleteReputationDataAccount"
 import {addPoints} from "./instructions/addPoints"
 import {subtractPoints} from "./instructions/subtractPoints"
 const provider = anchor.AnchorProvider.env();
@@ -16,20 +17,34 @@ anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 const payer = provider.wallet as anchor.Wallet;
 const [data] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from('reputation_data')],
-    program.programId
-  );
+  [Buffer.from('reputation_data')],
+  program.programId
+);
 before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n', async () => {	
-    //create payerd
-    const {reputationDataTx,} = await initializeReputationDataAccount(payer.payer.publicKey,data);
-    console.log("\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n")
-    console.log(`Created the reputation data account transaction link: ${reputationDataTx}`);
-    const repData  = await program.account.reputationData.fetch(data);
-    console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
-    console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
-    console.log(`\nReputation data account authority is : ${repData.initializer.toString()}`);
-    assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
-    assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
+  //create payerd
+  const {reputationDataTx,} = await initializeReputationDataAccount(payer.payer.publicKey,data);
+  console.log("\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n")
+  console.log(`Created the reputation data account transaction link: ${reputationDataTx}`);
+  const repData  = await program.account.reputationData.fetch(data);
+  console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
+  console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
+  console.log(`\nReputation data account authority is : ${repData.initializer.toString()}`);
+  assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
+  assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
+})
+after('\n============== DELETE REPUTATION DATA ACCOUNT ==================\n', async () => {
+  const {deleteReputationDataTx,} = await deleteReputationDataAccount(payer.payer.publicKey,data);
+  console.log("\n\n\n============== DELETE REPUTATION DATA ACCOUNT  =================\n\n")
+  console.log(`\n\nDeleted the reputation data account transaction link: ${deleteReputationDataTx}`);
+  try { 
+    await program.account.reputationData.fetch(data); 
+    throw("Not deleted")
+  }catch(error) {
+    if (error==="Not deleted"){
+      throw(error)
+    }
+    console.log("\nsuccessfully deleted\n")
+  }
 })
 describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
@@ -243,7 +258,7 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
     assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
     const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-      console.log(`\n\nDeleted the  account transaction link: ${deleteSourceDataTx}`);
+    console.log(`\n\nDeleted the  account transaction link: ${deleteSourceDataTx}`);
     try { 
       await program.account.sourceData.fetch(sourceData); 
       throw("Not deleted")
