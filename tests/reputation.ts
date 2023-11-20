@@ -14,6 +14,16 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 const payer = provider.wallet as anchor.Wallet;
+before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n', async () => {	
+    //create payerd
+    const {createRepDataTx,reputation} = await createRepDataAccount(payer.payer.publicKey);
+    console.log(`Created the reputation data account transaction link: ${createRepTx}`);
+    const repData  = await program.account.reputationData.fetch(reputationData);
+    console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
+    // assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    // console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
+    // assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+})
 describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
     //create payerd

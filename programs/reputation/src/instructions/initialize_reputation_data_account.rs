@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::reputation_data::ReputationData;
 
-pub fn initialize_reputation_program_account(ctx:Context<Initialize>, ) -> Result<()> {
+pub fn initialize_reputation_data_account(ctx:Context<Initialize>, ) -> Result<()> {
     ctx.accounts.data.create(ctx.accounts.payer.key())
 }
 

@@ -8,8 +8,8 @@ declare_id!("4GTMqydNGdDr7kKKHsZU7gJkq261HpmjTZohd5oPoThK");
 #[program]
 pub mod reputation {
     use super::*;
-    pub fn initialize_reputation_program_account(ctx: Context<Initialize>, ) -> Result<()> {
-        instructions::initialize_reputation_program_account::initialize_reputation_program_account(ctx)
+    pub fn initialize_reputation_data_account(ctx: Context<Initialize>, ) -> Result<()> {
+        instructions::initialize_reputation_data_account::initialize_reputation_data_account(ctx)
     }
     pub fn initialize_source_data_account(ctx: Context<InitializeSourceData>, source_name:String) -> Result<()> {
         instructions::initialize_source_data_account::initialize_source_data_account(ctx,source_name)
