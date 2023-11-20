@@ -7,6 +7,7 @@ pub use delete_reputation_data_account::*;
 pub use create_source_account::*; 
 pub use delete_source_account::*; 
 pub use update_reputation::*; 
+pub use update_source::*; 
 
 pub mod initialize_reputation_data_account;
 pub mod initialize_source_data_account;
@@ -17,3 +18,4 @@ pub mod delete_reputation_data_account;
 pub mod create_reputation_account;
 pub mod delete_reputation_account;
 pub mod update_reputation;
+pub mod update_source;

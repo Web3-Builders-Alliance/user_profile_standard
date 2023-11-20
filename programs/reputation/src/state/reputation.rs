@@ -26,4 +26,8 @@ impl Reputation {
         };
         Ok(())
     }
+    pub fn change_attached_account(&mut self, new_attached_account: Pubkey) -> Result<()> {
+        self.attached_account = new_attached_account ;
+        Ok(())
+    }
 }

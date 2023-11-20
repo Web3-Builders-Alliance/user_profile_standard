@@ -11,8 +11,8 @@ export const updateAttachedAccount =  async (
   reputation: anchor.web3.PublicKey
 ) => {
   // Create reputation account
-  const updatedAttachedAccountTx = await program.methods
-    .UpdateAttachedAccount(
+  const updatedAttachedAccountTx = await program.methods.changeReputationAttachedAccount
+    (
       newAuthority,
     )
     .accounts({
