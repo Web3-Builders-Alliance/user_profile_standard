@@ -124,7 +124,7 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
       if (error==="Not deleted"){
         throw(error)
       }
-      console.log("successfully deleted", error)
+      console.log("successfully deleted")
     }
 
   });
