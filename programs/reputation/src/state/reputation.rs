@@ -7,9 +7,9 @@ pub struct Reputation {
     attached_account: Pubkey,
 }
 impl Reputation {
-    pub fn create(&mut self, payer: Pubkey ) -> Result<()> {
+    pub fn create(&mut self, attached_account: Pubkey ) -> Result<()> {
         self.sources_count = 0 ;
-        self.attached_account = payer;
+        self.attached_account = attached_account;
         Ok(())
     }
     pub fn add_source(&mut self,) -> Result<()> {
