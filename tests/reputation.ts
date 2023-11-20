@@ -3,6 +3,7 @@ import { Program } from "@coral-xyz/anchor";
 import { assert } from "chai";
 import {Reputation } from "../target/types/reputation"
 import {createSourceAccount} from "./instructions/createSourceAccount"
+import {deleteSourceAccount} from "./instructions/deleteSourceAccount"
 import {initializeSourceDataAccount} from "./instructions/initializeSourceDataAccount"
 import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
@@ -25,7 +26,7 @@ describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
   });
 })
-describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n', () => {
+describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT =====================\n\n', () => {
   it("creates source account", async ()=> {
     const sourceName = "dummy" ;
     const authority = new anchor.web3.Keypair()
@@ -33,7 +34,7 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
-    const rep  = await program.account.reputation.fetch(reputation);
+    let rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
@@ -42,10 +43,10 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     console.log(`Created the user source account transaction link: ${createSourceTx}`);
     console.log(`\n\nThe source account is:${source}\n`)
 
-    const reloadRep  = await program.account.reputation.fetch(reputation);
-    console.log(`\nThe user source count is now:${reloadRep.sourcesCount.toNumber()}\n`)
-    assert.equal(reloadRep.sourcesCount.toNumber(), 1 , 'source count should be one') ;
-    assert.equal(reloadRep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    rep = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user source count is now:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 1 , 'source count should be one') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
 
     // source. 
     const sc = await program.account.source.fetch(source);
@@ -53,6 +54,51 @@ describe('\n\n\n============= CREATE A SOURCE ACCOUNT =====================\n\n'
     console.log(`\nSource points: ${sc.points}\n`);
     assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sc.points, 0 , "source points should be 0");
+  })
+  it("deletes source account", async ()=> {
+    const sourceName = "deletesource" ;
+    const authority = new anchor.web3.Keypair()
+
+    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    console.log(`Created the user reputation account transaction link: ${createRepTx}`);
+    //create reputation account to use to create source account 
+    let rep  = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+
+    const {source, createSourceTx} = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
+    console.log(`Created the user source account transaction link: ${createSourceTx}`);
+    console.log(`\n\nThe source account is:${source}\n`)
+
+    rep = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user source count is now:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 1 , 'source count should be one') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+
+    // source. 
+    const sc = await program.account.source.fetch(source);
+    console.log(`\nSource account name is: ${sc.name}\n`);
+    console.log(`\nSource points: ${sc.points}\n`);
+    assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
+    assert.equal(sc.points, 0 , "source points should be 0");
+
+    const {deleteSourceTx} = await deleteSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName) ;
+    console.log(`\n\nDeleted the source account transaction link: ${deleteSourceTx}`);
+    try { 
+      await program.account.source.fetch(source); 
+      throw("Not deleted")
+    }catch(error) {
+      if (error==="Not deleted"){
+        throw(error)
+      }
+      console.log("\nsuccessfully deleted\n")
+    }
+    rep  = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+
   })
 })
 describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n', () => {
@@ -62,7 +108,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     //create reputation account to use to create source account 
     const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
-    const rep  = await program.account.reputation.fetch(reputation);
+    let rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
@@ -71,10 +117,10 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     console.log(`Created the user source account transaction link: ${createSourceTx}`);
     console.log(`\nThe source account is:${source}\n`)
 
-    const reloadRep  = await program.account.reputation.fetch(reputation);
-    console.log(`\nThe user source count is now:${reloadRep.sourcesCount.toNumber()}\n`)
-    assert.equal(reloadRep.sourcesCount.toNumber(), 1 , 'source count should be one') ;
-    assert.equal(reloadRep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    rep = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user source count is now:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 1 , 'source count should be one') ;
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
 
     // source. 
     const sc = await program.account.source.fetch(source);
@@ -104,7 +150,7 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
     const sourceName = "deletes" ;
     const authority = new anchor.web3.Keypair()
     const {reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
-    const rep  = await program.account.reputation.fetch(reputation);
+    let rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
     //update reputation account with new source
@@ -112,10 +158,10 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
     const sc = await program.account.source.fetch(source);
     assert.equal(sc.name , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sc.points, 0 , "source points should be 0");
-    const reloadRep  = await program.account.reputation.fetch(reputation);
-    console.log(`\nThe user source count is now:${reloadRep.sourcesCount.toNumber()}\n`)
-    assert.equal(reloadRep.sourcesCount.toNumber(), 1 , 'source count should be one');
-    assert.equal(reloadRep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    rep = await program.account.reputation.fetch(reputation);
+    console.log(`\nThe user source count is now:${rep.sourcesCount.toNumber()}\n`)
+    assert.equal(rep.sourcesCount.toNumber(), 1 , 'source count should be one');
+    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
     const {deleteRepTx} = await deleteRepAccount(payer.payer.publicKey, authority.publicKey);
     console.log(`Deleted the user reputation account transaction link: ${deleteRepTx}`);
     try { 
