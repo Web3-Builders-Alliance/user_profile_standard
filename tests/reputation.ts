@@ -27,7 +27,7 @@ before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n
     const repData  = await program.account.reputationData.fetch(data);
     console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
     console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
-    console.log(`\nReputation data account authority is : ${repData.authority.toString()}`);
+    console.log(`\nReputation data account authority is : ${repData.initializer.toString()}`);
     assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
     assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
 })
