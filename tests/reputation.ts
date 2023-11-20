@@ -4,6 +4,7 @@ import { assert } from "chai";
 import {Reputation } from "../target/types/reputation"
 import {createSourceAccount} from "./instructions/createSourceAccount"
 import {initializeSourceDataAccount} from "./instructions/initializeSourceDataAccount"
+import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
 import {deleteRepAccount} from "./instructions/deleteRepAccount"
 import {addPoints} from "./instructions/addPoints"
@@ -126,7 +127,6 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
       }
       console.log("successfully deleted")
     }
-
   });
 })
 describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\n\n', () => {
@@ -157,8 +157,8 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
     }
   })
 })
-describe("\n\n\n=========== Creates Source Data Account =============\n\n\n", () => {
-  it("", async ()=> {
+describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\n\n", () => {
+  it("Creates the sources data account", async ()=> {
     const sourceName = "sourcedata"
     const authority = new anchor.web3.Keypair()
     const {sourceDataTx,sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
@@ -173,7 +173,28 @@ describe("\n\n\n=========== Creates Source Data Account =============\n\n\n", ()
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
     assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
   })  
+  it("Deletes sources data account", async ()=> {
+    const sourceName = "deletesourcedata"
+    const authority = new anchor.web3.Keypair()
+    const {sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
+    // source. 
+    const sd = await program.account.sourceData.fetch(sourceData);
+    assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
+    assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
+    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
+    const {deleteSourceDataTx} = await deleteSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
+      console.log(`Deleted the  account transaction link: ${deleteSourceDataTx}`);
+    try { 
+      await program.account.sourceData.fetch(sourceData); 
+      throw("Not deleted")
+    }catch(error) {
+      if (error==="Not deleted"){
+        throw(error)
+      }
+      console.log("successfully deleted")
+    }
+  })  
 })
-describe("\n\n\n=========== Deletes User Accounts =============\n\n\n", () => {
+describe("\n\n\n=========== Deletes Source Data Account =============\n\n\n", () => {
 
 })
