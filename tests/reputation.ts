@@ -34,7 +34,7 @@ before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n
 describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
     //create payerd
-    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,payer.payer.publicKey);
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,payer.payer.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     const rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nSources count is : ${rep.sourcesCount.toString()}`);
@@ -48,7 +48,7 @@ describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT ==================
     const sourceName = "dummy" ;
     const authority = new anchor.web3.Keypair()
 
-    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
     let rep  = await program.account.reputation.fetch(reputation);
@@ -75,7 +75,7 @@ describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT ==================
   it("deletes source account", async ()=> {
     const sourceName = "deletesource" ;
     const authority = new anchor.web3.Keypair()
-    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
     let rep  = await program.account.reputation.fetch(reputation);
@@ -120,7 +120,7 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     const sourceName = "dummy2" ;
     const authority = new anchor.web3.Keypair()
     //create reputation account to use to create source account 
-    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     let rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
@@ -163,7 +163,7 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
   it('Deletes User reputation account !', async () => {
     const sourceName = "deletes" ;
     const authority = new anchor.web3.Keypair()
-    const {reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const {reputation} = await createRepAccount(data,payer.payer.publicKey,authority.publicKey);
     let rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
@@ -176,7 +176,7 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
     console.log(`\nThe user source count is now:${rep.sourcesCount.toNumber()}\n`)
     assert.equal(rep.sourcesCount.toNumber(), 1 , 'source count should be one');
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
-    const {deleteRepTx} = await deleteRepAccount(payer.payer.publicKey, authority.publicKey);
+    const {deleteRepTx} = await deleteRepAccount(data,payer.payer.publicKey, authority.publicKey);
     console.log(`Deleted the user reputation account transaction link: ${deleteRepTx}`);
     try { 
       await program.account.reputation.fetch(reputation); 
@@ -194,7 +194,7 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
     const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
     const authority = new anchor.web3.Keypair()
     //create reputation account to use to create source ac.toString)
-    const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
     for (const sourceName of  sourceNames) {
       const {source, createSourceTx } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
       console.log(`Created the user source account transaction link: ${createSourceTx}`);
@@ -221,7 +221,7 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
   it("Creates the sources data account", async ()=> {
     const sourceName = "sourcedata"
     const authority = new anchor.web3.Keypair()
-    const {sourceDataTx,sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
+    const {sourceDataTx,sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
     console.log(`created source data account: ${sourceDataTx}`)
     console.log(`\nThe source data account is:${sourceData}\n`)
     // source. 
@@ -231,18 +231,18 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
     console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
     assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
-    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
+    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
   })  
   it("Deletes sources data account", async ()=> {
     const sourceName = "deletesourcedata"
     const authority = new anchor.web3.Keypair()
-    const {sourceData} = await initializeSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
+    const {sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
     // source. 
     const sd = await program.account.sourceData.fetch(sourceData);
     assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
-    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()} `);
-    const {deleteSourceDataTx} = await deleteSourceDataAccount(payer.payer.publicKey,authority.publicKey,sourceName) ;
+    assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
+    const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
       console.log(`\n\nDeleted the  account transaction link: ${deleteSourceDataTx}`);
     try { 
       await program.account.sourceData.fetch(sourceData); 

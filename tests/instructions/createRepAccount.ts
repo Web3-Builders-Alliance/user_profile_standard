@@ -5,6 +5,7 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 export const createRepAccount =  async (
+  data: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey
 ) => {
@@ -17,6 +18,7 @@ export const createRepAccount =  async (
     .createReputationAccount(
     )
     .accounts({
+      data,
       authority,
       reputation,
       payer 

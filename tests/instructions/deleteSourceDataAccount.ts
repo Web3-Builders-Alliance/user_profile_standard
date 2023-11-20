@@ -5,6 +5,7 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 export const deleteSourceDataAccount = async (
+  data: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
   sourceName: string
@@ -20,6 +21,7 @@ export const deleteSourceDataAccount = async (
     )
     .accounts({
       sourceData,
+      data,
       authority,
       payer,
     })
