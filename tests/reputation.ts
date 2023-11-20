@@ -180,10 +180,13 @@ describe('\n\n\n============== UPDATE USER REPUTATION ACCOUNT  =================
     const authority = new anchor.web3.Keypair()
     const newAuthority = new anchor.web3.Keypair()
     const {reputation} = await createRepAccount(data,payer.payer.publicKey,authority.publicKey);
-    const rep  = await program.account.reputation.fetch(reputation);
+    let rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
-    assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
+    assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as authority");
     const {updatedAttachedAccountTx} = await updateAttachedAccount(payer.payer.publicKey,authority.publicKey,newAuthority.publicKey,reputation);          
+    console.log(`\nThe change attached account transaction has passed signature: ${updatedAttachedAccountTx}`)
+    rep  = await program.account.reputation.fetch(reputation);
+    assert.equal(rep.attachedAccount.toString(), newAuthority.publicKey.toString(), "publick key of attached account not same as new authority");
   })
 })	
 describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================\n\n', () => {	
