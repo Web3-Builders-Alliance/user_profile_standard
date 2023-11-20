@@ -20,9 +20,9 @@ pub mod reputation {
     pub fn create_source_account(ctx: Context<CreateSource>, source_name: String ) -> Result<()> {
         instructions::create_source_account::create_source_account(ctx, source_name) 
     }
-    // pub fn delete_source_account(ctx: Context<UpdateSource>) -> Reslt<()> {
-    //     instructions::delete_source_account::delete_source_account(ctx)
-    // }
+    pub fn delete_source_account(ctx: Context<DeleteSource>,source_name:String) -> Result<()> {
+        instructions::delete_source_account::delete_source_account(ctx,source_name)
+    }
     pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
         instructions::create_reputation_account::create_reputation_account(ctx)
     }

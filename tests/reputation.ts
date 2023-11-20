@@ -58,7 +58,6 @@ describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT ==================
   it("deletes source account", async ()=> {
     const sourceName = "deletesource" ;
     const authority = new anchor.web3.Keypair()
-
     const {createRepTx,reputation} = await createRepAccount(payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
@@ -95,10 +94,8 @@ describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT ==================
       console.log("\nsuccessfully deleted\n")
     }
     rep  = await program.account.reputation.fetch(reputation);
-    console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
-
   })
 })
 describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n', () => {
