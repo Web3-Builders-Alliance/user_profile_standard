@@ -10,7 +10,7 @@ pub struct Initialize<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
     //program dump account 
-    #[account(init, payer=payer, seeds=[b"rep_program"], bump, space= 8 + ReputationData::INIT_SPACE)]
+    #[account(init, payer=payer, seeds=[b"reputation_data"], bump, space= 8 + ReputationData::INIT_SPACE)]
     data: Account<'info,ReputationData>,
     system_program: Program<'info, System>
 }

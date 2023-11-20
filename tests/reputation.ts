@@ -6,6 +6,7 @@ import {createSourceAccount} from "./instructions/createSourceAccount"
 import {deleteSourceAccount} from "./instructions/deleteSourceAccount"
 import {initializeSourceDataAccount} from "./instructions/initializeSourceDataAccount"
 import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
+import {initializeReputationDataAccount} from "./instructions/initializeReputationDataAccount"
 import {createRepAccount} from "./instructions/createRepAccount"
 import {deleteRepAccount} from "./instructions/deleteRepAccount"
 import {addPoints} from "./instructions/addPoints"
@@ -14,15 +15,21 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 const program = anchor.workspace.Reputation as Program<Reputation>;
 const payer = provider.wallet as anchor.Wallet;
+const [data] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from('reputation_data')],
+    program.programId
+  );
 before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n', async () => {	
     //create payerd
-    const {createRepDataTx,reputation} = await createRepDataAccount(payer.payer.publicKey);
-    console.log(`Created the reputation data account transaction link: ${createRepTx}`);
-    const repData  = await program.account.reputationData.fetch(reputationData);
+    const {reputationDataTx,} = await initializeReputationDataAccount(payer.payer.publicKey,data);
+    console.log("\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n")
+    console.log(`Created the reputation data account transaction link: ${reputationDataTx}`);
+    const repData  = await program.account.reputationData.fetch(data);
     console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
-    // assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
-    // console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
-    // assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
+    console.log(`\nReputation data account authority is : ${repData.authority.toString()}`);
+    assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
+    assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
 })
 describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
