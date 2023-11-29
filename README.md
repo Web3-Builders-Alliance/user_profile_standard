@@ -1,8 +1,8 @@
 # Identity On Chain
 
-## reputation
+## [Reputation](https://github.com/Web3-Builders-Alliance/user_profile_standard/tree/main/programs/reputation)
 
-### A reputation based identity standard
+### Reputation based identity standard
 
 Some applications online will require some kind of validation that the address being used
 to access meets a certain criteria  example criteria:
@@ -18,7 +18,7 @@ sources.
 Applications then have a central place to look for all the attributes they require before granting
 access.
 
-## network 
+## [network](https://github.com/Web3-Builders-Alliance/user_profile_standard/tree/main/programs/network) 
 Network is a program which workd with reputation as a reputation source.
 With network a user creates an account which is verified by web2 OAuth and Captcha.
 A user then gets reputation by being taged by other people he meets who are using network.
