@@ -1,11 +1,26 @@
 use anchor_lang::prelude::*;
 use crate::errors::ReputationError;
 #[account]
-#[derive(Default, InitSpace)]
+#[derive( InitSpace)]
 pub struct Reputation {
     sources_count: u64 ,
     attached_account: Pubkey,
+    #[max_len(10)]
+    date_creatd: String,
+    token_backed: bool,
+    scurity_level: Level ,
+    #[max_len(10,20)]
+    logs: Vec<String>
 }
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+#[derive(InitSpace)]
+pub enum Level {
+    High,
+    Medium,
+    Low,
+}
+
 impl Reputation {
     pub fn create(&mut self, attached_account: Pubkey ) -> Result<()> {
         self.sources_count = 0 ;
@@ -28,6 +43,10 @@ impl Reputation {
     }
     pub fn change_attached_account(&mut self, new_attached_account: Pubkey) -> Result<()> {
         self.attached_account = new_attached_account ;
+        Ok(())
+    }
+    ///ToDO: calculate the security Level
+    pub fn calculate_security_level()-> Result<()> {
         Ok(())
     }
 }

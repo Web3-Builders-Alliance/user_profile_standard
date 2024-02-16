@@ -4,7 +4,6 @@ pub fn delete_reputation_data_account(_ctx: Context<DeleteReputationData>, ) -> 
     Ok(())
 }
 #[derive(Accounts)]
-#[instruction()]
 pub struct DeleteReputationData<'info> {
     #[account(mut)]
     payer: Signer<'info> ,

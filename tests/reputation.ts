@@ -49,14 +49,15 @@ after('\n============== DELETE REPUTATION DATA ACCOUNT ==================\n', as
 })
 describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
-    //create payerd
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,payer.payer.publicKey);
+    //create payer
+    const authority = new anchor.web3.Keypair()
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     const rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nSources count is : ${rep.sourcesCount.toString()}`);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
-    assert.equal(rep.attachedAccount.toString(), payer.publicKey.toString(), "publick key of attached account not same as payer");
+    assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
   });
 })
 describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT =====================\n\n', () => {
@@ -249,7 +250,7 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
 })
 describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\n\n", () => {
   it("Creates the sources data account", async ()=> {
-    const sourceName = "sourcedata"
+    const sourceName = `${Math.random() * 10000000}`
     const authority = new anchor.web3.Keypair()
     const {sourceDataTx,sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
     console.log(`created source data account: ${sourceDataTx}`)
@@ -264,10 +265,10 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
     assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
   })  
   it("Deletes sources data account", async ()=> {
-    const sourceName = "deletesourcedata"
+    const sourceName = "delete_sourcedata"
     const authority = new anchor.web3.Keypair()
     const {sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-    // source. 
+    // // source. 
     const sd = await program.account.sourceData.fetch(sourceData);
     assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
