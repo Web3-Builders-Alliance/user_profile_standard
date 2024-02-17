@@ -51,21 +51,30 @@ describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================
   it('Initializes User reputation account !', async () => {
     //create payer
     const authority = new anchor.web3.Keypair()
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     const rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nSources count is : ${rep.sourcesCount.toString()}`);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
     assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
+    console.log(`\n  date string  ${rep.dateCreated.toString()}\n`);
+    console.log(`\n logs: ${rep.logs.toString()}\n`);
+    console.log(`\n token_backed:  ${rep.tokenBacked.toString()}\n`);
+    // assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
   });
 })
 describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT =====================\n\n', () => {
   it("creates source account", async ()=> {
-    const sourceName = "dummy" ;
+    const sourceName = "dummy";
     const authority = new anchor.web3.Keypair()
-
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`
+    const tokenBacked = false;
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
     let rep  = await program.account.reputation.fetch(reputation);
@@ -92,7 +101,10 @@ describe('\n\n\n============= CREATE/DELETES A SOURCE ACCOUNT ==================
   it("deletes source account", async ()=> {
     const sourceName = "deletesource" ;
     const authority = new anchor.web3.Keypair()
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     //create reputation account to use to create source account 
     let rep  = await program.account.reputation.fetch(reputation);
@@ -137,7 +149,10 @@ describe('\n\n\n============= UPDATE USER SOURCE ACCOUNT ==================\n\n'
     const sourceName = "dummy2" ;
     const authority = new anchor.web3.Keypair()
     //create reputation account to use to create source account 
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     let rep  = await program.account.reputation.fetch(reputation);
     console.log(`\nThe user inititial source count is:${rep.sourcesCount.toNumber()}\n`)
@@ -180,7 +195,10 @@ describe('\n\n\n============== UPDATE USER REPUTATION ACCOUNT  =================
     const sourceName = "updates" ;
     const authority = new anchor.web3.Keypair()
     const newAuthority = new anchor.web3.Keypair()
-    const {reputation} = await createRepAccount(data,payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     let rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as authority");
@@ -194,7 +212,10 @@ describe('\n\n\n============== DELETE USER REPUTATION ACCOUNT  =================
   it('Deletes User reputation account !', async () => {
     const sourceName = "deletes" ;
     const authority = new anchor.web3.Keypair()
-    const {reputation} = await createRepAccount(data,payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     let rep  = await program.account.reputation.fetch(reputation);
     assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
     assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
@@ -225,7 +246,10 @@ describe('\n\n\n============= CREATE MULTIPLE SOURCE ACCOUTS ==================\
     const sourceNames = ["SourceOne", "SourceTwo", "SourceThree" , "SourceFour"];
     const authority = new anchor.web3.Keypair()
     //create reputation account to use to create source ac.toString)
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey);
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const {reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     for (const sourceName of  sourceNames) {
       const {source, createSourceTx } = await createSourceAccount(reputation,authority.publicKey,payer.payer.publicKey,sourceName, ) ;
       console.log(`Created the user source account transaction link: ${createSourceTx}`);
