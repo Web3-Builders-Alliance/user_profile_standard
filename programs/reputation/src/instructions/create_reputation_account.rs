@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::{reputation::Reputation, reputation_data::ReputationData};
-pub fn create_reputation_account(ctx: Context<CreateReputation>, ) -> Result<()> {
-    ctx.accounts.reputation.create(ctx.accounts.authority.key())
+pub fn create_reputation_account(ctx: Context<CreateReputation>,date_string: String,token_backed: bool) -> Result<()> {
+    ctx.accounts.reputation.create(ctx.accounts.authority.key(), date_string,token_backed)
 }
 #[derive(Accounts)]
 #[instruction()]
