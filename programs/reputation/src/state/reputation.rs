@@ -40,11 +40,11 @@ impl Reputation {
         Ok(())
     }
     pub fn back_with_tokens(&mut self)-> Result<()> {
-       self.token_backed= true ; 
-       Ok(())
+        self.token_backed= true ; 
+        Ok(())
     }
     pub fn remove_backing_tokens(&mut self) -> Result<()> {
-       Ok(())
+        Ok(())
     }
     pub fn add_source(&mut self,) -> Result<()> {
         self.sources_count= match  self.sources_count.checked_add(1){

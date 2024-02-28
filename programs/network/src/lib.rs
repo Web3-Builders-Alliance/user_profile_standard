@@ -11,7 +11,7 @@ pub mod network {
     use super::*;
 
     pub fn create_account(ctx: Context<CreateAccount>) -> Result<()> {
-        instructions::create_account::create_account(CreateAccount)
+        instructions::create_network_account::create_account(ctx)
     }
 }
 

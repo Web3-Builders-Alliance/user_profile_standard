@@ -18,5 +18,5 @@ default = []
 
 [dependencies]
 anchor-lang = "0.29.0"
-reputation = {path="../reputation,", feactures=["cpi"]}
+reputation = {path="../reputation", features=["cpi"]}
 
