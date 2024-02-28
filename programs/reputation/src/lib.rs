@@ -26,8 +26,11 @@ pub mod reputation {
     pub fn delete_source_account(ctx: Context<DeleteSource>,source_name:String) -> Result<()> {
         instructions::delete_source_account::delete_source_account(ctx,source_name)
     }
-    pub fn create_reputation_account(ctx: Context<CreateReputation>,date_string: String,token_backed: bool)->Result<()> {
-        instructions::create_reputation_account::create_reputation_account(ctx,date_string,token_backed)
+    pub fn create_token_backed_reputation_account(ctx: Context<CreateBackedReputation>,date_string: String,)->Result<()> {
+        instructions::create_token_backed_reputation_account::create_token_backed_reputation_account(ctx,date_string)
+    }
+    pub fn create_non_token_backed_reputation_account(ctx: Context<CreateNonBackedReputation>,date_string: String,)->Result<()> {
+        instructions::create_non_token_backed_reputation_account::create_non_token_backed_reputation_account(ctx,date_string)
     }
     pub fn change_reputation_attached_account(ctx:Context<UpdateReputation>,new_authority:Pubkey) -> Result<()>{
         instructions::update_reputation::change_attached_account(ctx,new_authority)

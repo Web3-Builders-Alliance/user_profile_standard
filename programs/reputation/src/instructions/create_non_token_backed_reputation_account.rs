@@ -1,11 +1,12 @@
 use anchor_lang::prelude::*;
 use crate::state::{reputation::Reputation, reputation_data::ReputationData};
-pub fn create_reputation_account(ctx: Context<CreateReputation>,date_string: String,token_backed: bool) -> Result<()> {
-    ctx.accounts.reputation.create(ctx.accounts.authority.key(), date_string,token_backed)
+pub fn create_non_token_backed_reputation_account(ctx: Context<CreateNonBackedReputation>,date_string: String,) -> Result<()> {
+    ctx.accounts.reputation.create_non_token_backed(ctx.accounts.authority.key(), date_string);
+    Ok(())
 }
 #[derive(Accounts)]
 #[instruction()]
-pub struct CreateReputation<'info> {
+pub struct CreateNonBackedReputation<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
     authority: SystemAccount<'info>,
@@ -15,4 +16,5 @@ pub struct CreateReputation<'info> {
     data: Account<'info,ReputationData>,
     system_program: Program<'info, System>
 }
+
 
