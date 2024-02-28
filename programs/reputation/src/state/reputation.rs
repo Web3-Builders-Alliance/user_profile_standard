@@ -23,13 +23,28 @@ pub enum Level {
 }
 
 impl Reputation {
-    pub fn create(&mut self, attached_account: Pubkey,date_string: String, token_backed: bool) -> Result<()> {
+    pub fn create_non_token_backed(&mut self, attached_account: Pubkey,date_string: String, ) -> Result<()> {
         self.sources_count = 0 ;
         self.attached_account = attached_account;
         self.date_created = date_string ; 
         self.slot_time_created = Clock::get()?.slot;
-        self.token_backed = token_backed ;
+        self.token_backed = false;
         Ok(())
+    }
+    pub fn create_token_backed(&mut self, attached_account: Pubkey,date_string: String, ) -> Result<()> {
+        self.sources_count = 0 ;
+        self.attached_account = attached_account;
+        self.date_created = date_string ; 
+        self.slot_time_created = Clock::get()?.slot;
+        self.token_backed = true;
+        Ok(())
+    }
+    pub fn back_with_tokens(&mut self)-> Result<()> {
+       self.token_backed= true ; 
+       Ok(())
+    }
+    pub fn remove_backing_tokens(&mut self) -> Result<()> {
+       Ok(())
     }
     pub fn add_source(&mut self,) -> Result<()> {
         self.sources_count= match  self.sources_count.checked_add(1){
