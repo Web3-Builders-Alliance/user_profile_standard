@@ -8,6 +8,8 @@ pub struct Source {
     points : u8 ,
     #[max_len(50)]
     name : String,
+    #[max_len(10,20)]
+    logs : Vec<String>
 }
 impl Source {
     pub fn create (&mut self, name: String, authority: Pubkey, reputation: Pubkey)-> Result<()> {

@@ -1,4 +1,8 @@
 use anchor_lang::prelude::*;
+pub mod instructions;
+pub mod state;
+
+use instructions::*;
 
 declare_id!("8VsDQfLQ8GALJkDGFekW5Cx7RcSuA3vDKyU25VPFJMD4");
 
@@ -6,10 +10,8 @@ declare_id!("8VsDQfLQ8GALJkDGFekW5Cx7RcSuA3vDKyU25VPFJMD4");
 pub mod network {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
+    pub fn create_account(ctx: Context<CreateAccount>) -> Result<()> {
+        instructions::create_account::create_account(CreateAccount)
     }
 }
 
-#[derive(Accounts)]
-pub struct Initialize {}
