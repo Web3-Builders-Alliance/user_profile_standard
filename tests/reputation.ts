@@ -47,7 +47,27 @@ after('\n============== DELETE REPUTATION DATA ACCOUNT ==================\n', as
     console.log("\nsuccessfully deleted\n")
   }
 })
-describe('\n\n\n============== CREATE USER REPUTATION ACCOUNT  =================\n\n', () => {	
+describe('\n\n\n============== CREATE USER TOKEN BACKED REPUTATION ACCOUNT  =================\n\n', () => {	
+  it('Initializes User reputation account !', async () => {
+    //create payer
+    const authority = new anchor.web3.Keypair()
+    const date = new Date();
+    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = true;
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
+    console.log(`Created the user reputation account transaction link: ${createRepTx}`);
+    const rep  = await program.account.reputation.fetch(reputation);
+    console.log(`\nSources count is : ${rep.sourcesCount.toString()}`);
+    assert.equal(rep.sourcesCount.toNumber(), 0 , 'source count should be zero') ;
+    console.log(`\nAttached account ${rep.attachedAccount.toString()}\n`);
+    assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
+    console.log(`\n  date string  ${rep.dateCreated.toString()}\n`);
+    console.log(`\n logs: ${rep.logs.toString()}\n`);
+    console.log(`\n token_backed:  ${rep.tokenBacked.toString()}\n`);
+    // assert.equal(rep.attachedAccount.toString(), authority.publicKey.toString(), "publick key of attached account not same as payer");
+  });
+})
+describe('\n\n\n============== CREATE USER NON TOKEN BACKED REPUTATION ACCOUNT  =================\n\n', () => {	
   it('Initializes User reputation account !', async () => {
     //create payer
     const authority = new anchor.web3.Keypair()
