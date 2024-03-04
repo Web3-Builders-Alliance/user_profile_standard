@@ -10,9 +10,9 @@ declare_id!("8VsDQfLQ8GALJkDGFekW5Cx7RcSuA3vDKyU25VPFJMD4");
 pub mod network {
     use super::*;
 
-    pub fn register_as_source(ctx: Context<RegisterAsSource>) -> Result<()> {
-       instructions::register_network_as_reputation_source::register_network_as_reputation_source(ctx, "network".to_string()) 
-    }
+    // pub fn register_as_source(ctx: Context<RegisterAsSource>, source_name: String) -> Result<()> {
+    //    instructions::register_network_as_reputation_source::register_network_as_reputation_source(ctx, source_name) 
+    // }
     // pub fn start_a_network() -> Result<()> {}
     // pub fn join_as_parent() -> Result<()> {} 
     // pub fn join_as_child() -> Result<()> {} 

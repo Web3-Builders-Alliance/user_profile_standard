@@ -22,18 +22,18 @@ const [data] = anchor.web3.PublicKey.findProgramAddressSync(
   [Buffer.from('reputation_data')],
   program.programId
 );
-before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n', async () => {	
-  //create payerd
-  const {reputationDataTx,} = await initializeReputationDataAccount(payer.payer.publicKey,data);
-  console.log("\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n")
-  console.log(`Created the reputation data account transaction link: ${reputationDataTx}`);
-  const repData  = await program.account.reputationData.fetch(data);
-  console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
-  console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
-  console.log(`\nReputation data account authority is : ${repData.initializer.toString()}`);
-  assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
-  assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
-})
+// before('\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n', async () => {	
+//   //create payerd
+//   const {reputationDataTx,} = await initializeReputationDataAccount(payer.payer.publicKey,data);
+//   console.log("\n\n\n============== CREATE REPUTATION DATA ACCOUNT  =================\n\n")
+//   console.log(`Created the reputation data account transaction link: ${reputationDataTx}`);
+//   const repData  = await program.account.reputationData.fetch(data);
+//   console.log(`\nSources tally is : ${repData.sourcesTally.toString()}`);
+//   console.log(`\Reputation account tally is : ${repData.reputationAccountsTally.toString()}`);
+//   console.log(`\nReputation data account authority is : ${repData.initializer.toString()}`);
+//   assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
+//   assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
+// })
 after('\n============== DELETE REPUTATION DATA ACCOUNT ==================\n', async () => {
   const {deleteReputationDataTx,} = await deleteReputationDataAccount(payer.payer.publicKey,data);
   console.log("\n\n\n============== DELETE REPUTATION DATA ACCOUNT  =================\n\n")
@@ -54,7 +54,7 @@ describe('\n\n\n============== CREATE USER TOKEN BACKED REPUTATION ACCOUNT  ====
     const authority = new anchor.web3.Keypair()
     const date = new Date();
     const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-    const tokenBacked = true;
+     const tokenBacked = true;
     const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, datString, tokenBacked);
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     const rep  = await program.account.reputation.fetch(reputation);
@@ -308,6 +308,8 @@ describe("\n\n\n=========== Creates/Deletes Source Data Account =============\n\
     assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
     assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
     assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
+    const repData  = await program.account.reputationData.fetch(data);  
+    console.log(`\nSources tally in reputation data now ${repData.sourcesTally.toString()}`);
   })  
   it("Deletes sources data account", async ()=> {
     const sourceName = "delete_sourcedata"

@@ -18,4 +18,8 @@ impl ReputationData {
         self.logs.push("Created New".to_uppercase().to_string());
         Ok(())
     }
+    pub fn add_source(&mut self) -> Result<()> {
+        self.sources_tally = self.sources_tally.checked_add(1).unwrap();
+        Ok(())
+    }
 }

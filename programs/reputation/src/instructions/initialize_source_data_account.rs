@@ -2,10 +2,11 @@ use anchor_lang::prelude::*;
 use crate::state::{source_data::*,reputation_data::ReputationData};
 
 pub fn initialize_source_data_account (ctx: Context<InitializeSourceData>,source_name: String) -> Result<()> {
-    ctx.accounts.source_data.create(source_name, ctx.accounts.authority.key())     
+    ctx.accounts.source_data.create(source_name, ctx.accounts.authority.key());
+    ctx.accounts.data.add_source()
 } 
 #[derive(Accounts)]
-#[instruction(source_name: String )]
+#[instruction(source_name: String)]
 pub struct InitializeSourceData<'info> {
     #[account(mut)]
     payer: Signer<'info> ,
@@ -15,5 +16,5 @@ pub struct InitializeSourceData<'info> {
     #[account(mut,seeds=[b"reputation_data"], bump,)]
     data: Account<'info,ReputationData>,
     system_program:Program<'info, System>
-}
+} 
 

@@ -18,12 +18,14 @@ pub fn register_network_as_reputation_source(ctx: Context<RegisterAsSource>, sou
 }
 
 #[derive(Accounts)]
+#[instruction(source_name: String)]
 pub struct RegisterAsSource<'info>{
     #[account(mut)]
     payer: Signer<'info>,
     authority: SystemAccount<'info>,
-    #[account(seeds=[b"reputation",authority.key().as_ref()], bump, seeds::program=reputation_program.key())]
-    source_data : Account<'info,SourceData>,
+    // #[account(seeds=[b"source_data", source_name.as_bytes()],bump, seeds::program=reputation_program.key())]
+    ///CHECK: CHECKED IN CPI
+    source_data : UncheckedAccount<'info,>,
     reputation_data: Account<'info, ReputationData>, 
     reputation_program: Program<'info, ReputationProgram>,
     system_program: Program<'info, System>,
