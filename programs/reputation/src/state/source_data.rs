@@ -14,4 +14,8 @@ impl SourceData{
         self.source_authority = source_authority ;
         Ok(())
     }
+    pub fn add_count(&mut self)->Result<()>{
+        self.source_count = self.source_count + 1 ;
+        Ok(())
+    }
 }

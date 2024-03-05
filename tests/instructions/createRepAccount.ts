@@ -39,7 +39,7 @@ export const createRepAccount =  async (
       data,
       authority,
       reputation,
-      payer 
+      payer,
     })
     .rpc();
   return {createRepTx, reputation} 

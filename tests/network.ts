@@ -31,41 +31,42 @@ before('\n\n\n*************** CREATE REPUTATION DATA ACCOUNT***************\n\n'
   assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
   assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
 
-  describe('************It registers network as source***************',()=>{
-    it('Registering network as source', async ()=>{
-      const sourceName = 'network'
-      const authority = new anchor.web3.Keypair()
-      const {sourceDataTx,sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-      console.log(`created source data account: ${sourceDataTx}`)
-      console.log(`\nThe source data account is:${sourceData}\n`)
-      // source. 
-      const sd = await rep_program.account.sourceData.fetch(sourceData);
-      console.log(`\nSource account name is: ${sd.sourceName}\n`);
-      console.log(`\nSource points: ${sd.sourceCount}\n`);
-      console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
-      assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
-      assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
-      assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
-      const repData  = await rep_program.account.reputationData.fetch(data);  
-      console.log(`\nSources tally in reputation data now ${repData.sourcesTally.toString()}`);
-    })
-  })
+  const sourceName = 'network'
+  const authority = new anchor.web3.Keypair()
+  const {sourceDataTx,sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
+  console.log(`created source data account: ${sourceDataTx}`)
+  console.log(`\nThe source data account is:${sourceData}\n`)
+  // source. 
+  const sd = await rep_program.account.sourceData.fetch(sourceData);
+  console.log(`\nSource account name is: ${sd.sourceName}\n`);
+  console.log(`\nSource points: ${sd.sourceCount}\n`);
+  console.log(`\nSource authority: ${sd.sourceAuthority}\n`);
+  assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
+  assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
+  assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
+  const repData2  = await rep_program.account.reputationData.fetch(data);  
+  console.log(`\nSources tally in reputation data now ${repData.sourcesTally.toString()}`);
 })
 after('***************It deletes network as source',async ()=>{
-      const sourceName = 'network'
-      const authority = new anchor.web3.Keypair()
-      const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-      console.log(`created source data account: ${deleteSourceDataTx}`)
+  const sourceName = 'network'
+  const authority = new anchor.web3.Keypair()
+  const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
+  console.log(`created source data account: ${deleteSourceDataTx}`)
 }) 
 describe('**************create network account*****************',()=>{
   it('creates network account', async ()=>{
+    const sourceName = 'network'
     const authority = new anchor.web3.Keypair()
     const date = new Date();
     const dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
     const tokenBacked = false;
-    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, dateString, tokenBacked);
+    const [sourceData] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from('source_data'), Buffer.from(sourceName)],
+      rep_program.programId
+    );
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, dateString, tokenBacked, );
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
-    const {createAccountTx,network} = await createAccount(payer.payer.publicKey,authority.publicKey, reputation);
+    const {createAccountTx,network} = await createAccount(payer.payer.publicKey,authority.publicKey, reputation, sourceData,);
     console.log(`The network account transaction: ${createAccountTx}`)
   })
 })

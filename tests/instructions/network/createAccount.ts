@@ -11,6 +11,7 @@ export const createAccount = async (
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
   reputation: anchor.web3.PublicKey,
+  sourceData: anchor.web3.PublicKey,
 ) => {
   const [network] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from('network'),authority.toBuffer()],
@@ -24,6 +25,7 @@ export const createAccount = async (
       payer,
       authority,
       network,
+      sourceData,
       reputation,
       reputationProgram: rep_program.programId,
     })
