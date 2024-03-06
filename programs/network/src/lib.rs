@@ -13,7 +13,9 @@ pub mod network {
     // pub fn register_as_source(ctx: Context<RegisterAsSource>, source_name: String) -> Result<()> {
     //    instructions::register_network_as_reputation_source::register_network_as_reputation_source(ctx, source_name) 
     // }
-    // pub fn start_a_network() -> Result<()> {}
+    pub fn start_network_node(ctx: Context<StartNode>, ) -> Result<()> {
+        instructions::start_network_node::start_node(ctx)
+    }
     // pub fn join_as_parent() -> Result<()> {} 
     // pub fn join_as_child() -> Result<()> {} 
     
