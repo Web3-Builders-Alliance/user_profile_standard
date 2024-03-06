@@ -5,6 +5,7 @@ import {Reputation} from "../target/types/reputation";
 import {Network} from "../target/types/network";
 import {createRepAccount} from "./instructions/createRepAccount"
 import {createAccount} from "./instructions/network/createAccount"
+import {startNetworkNode} from "./instructions/network/startNetworkNode"
 import {initializeReputationDataAccount} from "./instructions/initializeReputationDataAccount"
 import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
 import {initializeSourceDataAccount} from "./instructions/initializeSourceDataAccount"
@@ -68,6 +69,26 @@ describe('**************create network account*****************',()=>{
     console.log(`Created the user reputation account transaction link: ${createRepTx}`);
     const {createAccountTx,network} = await createAccount(payer.payer.publicKey,authority.publicKey, reputation, sourceData,);
     console.log(`The network account transaction: ${createAccountTx}`)
+  })
+})
+describe('**************creates network node *****************',()=>{
+  it('creates network node', async ()=>{
+    const sourceName = 'network'
+    const authority = new anchor.web3.Keypair()
+    const date = new Date();
+    const dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    const tokenBacked = false;
+    const [sourceData] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from('source_data'), Buffer.from(sourceName)],
+      rep_program.programId
+    );
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,authority.publicKey, dateString, tokenBacked, );
+    console.log(`Created the user reputation account transaction link: ${createRepTx}`);
+    const {createAccountTx,network} = await createAccount(payer.payer.publicKey,authority.publicKey, reputation, sourceData,);
+    console.log(`The network account transaction: ${createAccountTx}`)
+    const {startedNetworkNodeTx, node} =  await startNetworkNode(payer.payer.publicKey, authority.publicKey,network);
+    console.log(`Started the network node transaction: ${startedNetworkNodeTx}`)
+    
   })
 })
 
