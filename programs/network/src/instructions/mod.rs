@@ -1,6 +1,10 @@
 pub use create_network_account::*;
 pub use register_network_as_reputation_source::*;
 pub use start_network_node::*;
+pub use add_to_network::*;
+pub use join_a_network::*;
+pub mod join_a_network;
+pub mod add_to_network ;
 pub mod start_network_node ;
 pub mod create_network_account;
 pub mod register_network_as_reputation_source;
