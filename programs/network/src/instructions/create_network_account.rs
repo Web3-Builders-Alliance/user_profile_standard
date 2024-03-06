@@ -3,6 +3,7 @@ use reputation::state::{reputation::Reputation, source_data::SourceData};
 use reputation::program::Reputation as ReputationProgram ;
 pub fn create_account(ctx: Context<CreateAccount>, ) -> Result<()> {
     ctx.accounts.source_data.add_count()?;
+    ctx.accounts.network.initialize_account(ctx.accounts.authority.key(), ctx.accounts.reputation.key())?;
     Ok(())
 }
 
