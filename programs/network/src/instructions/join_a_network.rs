@@ -12,7 +12,7 @@ pub struct Join<'info>{
     parent: SystemAccount<'info>,
     #[account(seeds=[b"network", authority.key.as_ref()], bump ,)]
     network: Account<'info, Network>, 
-    #[account(seeds=[b"node", authority.key.as_ref()], bump ,)]
+    #[account(seeds=[b"node", parent.key.as_ref()], bump ,)]
     node: Account<'info, Node>, 
     #[account(seeds=[b"network", parent.key.as_ref()], bump ,)]
     parent_network: Account<'info, Network>,

@@ -1,27 +1,39 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
-import {Reputation } from "../../target/types/reputation"
+import {Network} from "../../../target/types/network"
 const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
-const program = anchor.workspace.Reputation as Program<Reputation>;
-export const updateAttachedAccount =  async (
+const program = anchor.workspace.Network as Program<Network>;
+export const joinANetwork =  async (
   payer: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
-  newAuthority: anchor.web3.PublicKey,
-  reputation: anchor.web3.PublicKey
+  network: anchor.web3.PublicKey,
+  parentNetwork: anchor.web3.PublicKey,
+  parent: anchor.web3.PublicKey,
+  node: anchor.web3.PublicKey,
 ) => {
+    
+  const [joinEscrow] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from('join_escrow'),authority.toBuffer()],
+    program.programId
+  );
+    
   // Create reputation account
-  const updatedAttachedAccountTx = await program.methods.changeReputationAttachedAccount
+  const joinANetworkTx= await program.methods.joinANetwork
     (
-      newAuthority,
+      
     )
     .accounts({
+      payer, 
       authority,
-      reputation,
-      payer 
+      network,
+      parentNetwork,
+      parent,
+      node,
+      joinEscrow,
     })
     .rpc();
-  return {updatedAttachedAccountTx} 
+  return {joinANetworkTx,joinEscrow} 
 }
 
 
