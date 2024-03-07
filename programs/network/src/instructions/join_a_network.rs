@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::{network::Network, node::Node, join_escrow::JoinEscrow};
-pub fn join_a_network(ctx: Context<Join>, ) -> Result<()> {
+pub fn join_a_network(ctx: Context<Join>, init_time: String) -> Result<()> {
+    ctx.accounts.join_escrow.initialize_escrow(ctx.accounts.authority.key(),ctx.accounts.parent.key(),init_time)?;
     Ok(())
 }
 

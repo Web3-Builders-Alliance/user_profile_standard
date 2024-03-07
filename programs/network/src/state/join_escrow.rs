@@ -2,9 +2,9 @@ use anchor_lang::prelude::*;
 #[account]
 #[derive(InitSpace)]
 pub struct JoinEscrow {
-    parent: Pubkey,
-    child: Pubkey,
-    #[max_len(10)]
+    pub parent: Pubkey,
+    pub child: Pubkey,
+    #[max_len(20)]
     date_created: String,
     created_slot: u64,
 }

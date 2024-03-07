@@ -14,6 +14,7 @@ export const addToNetwork =  async (
   child: anchor.web3.PublicKey,
   joinEscrow: anchor.web3.PublicKey,
   node: anchor.web3.PublicKey,
+  initTime: String
 ) => {
   const [linkData] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("link_data"), node.toBuffer(), child.toBuffer(), authority.toBuffer()],
@@ -23,6 +24,7 @@ export const addToNetwork =  async (
   // Create reputation account
   const addToNetworkTx = await program.methods.addToNetwork
     (
+      initTime
     )
     .accounts({
       payer, 

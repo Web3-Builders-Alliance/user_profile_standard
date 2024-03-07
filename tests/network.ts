@@ -125,7 +125,7 @@ describe('************* join a network *****************',()=>{
     const childNet = await createAccount(payer.payer.publicKey,child.publicKey, childRep.reputation, sourceData,);
     console.log(`The network account transaction: ${childNet.createAccountTx}`)
 
-    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, );
+    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, dateString);
 
     console.log(`The join network instraction has been sent successfully ${joinANetworkTx}`)
 
@@ -163,11 +163,11 @@ describe('************* add to network *****************',()=>{
     const childNet = await createAccount(payer.payer.publicKey,child.publicKey, childRep.reputation, sourceData,);
     console.log(`The network account transaction: ${childNet.createAccountTx}`)
 
-    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, );
+    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node,dateString);
 
     console.log(`The join network instraction has been sent successfully ${joinANetworkTx}`)
 
-    const {addToNetworkTx, linkData} = await addToNetwork(payer.payer.publicKey,parent.publicKey, parent.publicKey,childNet.network,network,child.publicKey, joinEscrow,node ) ;
+    const {addToNetworkTx, linkData} = await addToNetwork(payer.payer.publicKey,parent.publicKey, parent.publicKey,childNet.network,network,child.publicKey, joinEscrow,node, dateString) ;
     console.log(`Created link data account ${addToNetworkTx}`) ;
 
   })
