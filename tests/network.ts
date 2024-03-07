@@ -6,6 +6,7 @@ import {Network} from "../target/types/network";
 import {createRepAccount} from "./instructions/createRepAccount"
 import {createAccount} from "./instructions/network/createAccount"
 import {joinANetwork} from "./instructions/network/joinANetwork"
+import {addToNetwork} from "./instructions/network/addToNetwork"
 import {startNetworkNode} from "./instructions/network/startNetworkNode"
 import {initializeReputationDataAccount} from "./instructions/initializeReputationDataAccount"
 import {deleteSourceDataAccount} from "./instructions/deleteSourceDataAccount"
@@ -124,10 +125,51 @@ describe('************* join a network *****************',()=>{
     const childNet = await createAccount(payer.payer.publicKey,child.publicKey, childRep.reputation, sourceData,);
     console.log(`The network account transaction: ${childNet.createAccountTx}`)
 
-    let {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, );
+    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, );
 
     console.log(`The join network instraction has been sent successfully ${joinANetworkTx}`)
+
   })
 })
 
+describe('************* add to network *****************',()=>{
+  it('Adds to network', async ()=>{
+    const sourceName = 'network'
+    const parent  = new anchor.web3.Keypair()
+    let date = new Date();
+    let dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    let tokenBacked = false;
+    let [sourceData] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from('source_data'), Buffer.from(sourceName)],
+      rep_program.programId
+    );
+    const {createRepTx,reputation} = await createRepAccount(data, payer.payer.publicKey,parent.publicKey, dateString, tokenBacked, );
+    console.log(`Created the user reputation account transaction link: ${createRepTx}`);
+    const {createAccountTx,network} = await createAccount(payer.payer.publicKey,parent.publicKey, reputation, sourceData,);
+    console.log(`The network account transaction: ${createAccountTx}`)
+    const {startedNetworkNodeTx, node} =  await startNetworkNode(payer.payer.publicKey, parent.publicKey,network);
+    console.log(`Started the network node transaction: ${startedNetworkNodeTx}`)
+
+    const child  = new anchor.web3.Keypair()
+    date = new Date();
+    dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    tokenBacked = false;
+    [sourceData] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from('source_data'), Buffer.from(sourceName)],
+      rep_program.programId
+    );
+    const childRep = await createRepAccount(data, payer.payer.publicKey,child.publicKey, dateString, tokenBacked, );
+    console.log(`Created the user reputation account transaction link: ${childRep.createRepTx}`);
+    const childNet = await createAccount(payer.payer.publicKey,child.publicKey, childRep.reputation, sourceData,);
+    console.log(`The network account transaction: ${childNet.createAccountTx}`)
+
+    const {joinANetworkTx ,joinEscrow} = await joinANetwork(payer.payer.publicKey,child.publicKey,childNet.network,network, parent.publicKey, node, );
+
+    console.log(`The join network instraction has been sent successfully ${joinANetworkTx}`)
+
+    const {addToNetworkTx, linkData} = await addToNetwork(payer.payer.publicKey,parent.publicKey, parent.publicKey,childNet.network,network,child.publicKey, joinEscrow,node ) ;
+    console.log(`Created link data account ${addToNetworkTx}`) ;
+
+  })
+})
 

@@ -17,7 +17,7 @@ pub struct Join<'info>{
     #[account(seeds=[b"network", parent.key.as_ref()], bump ,)]
     parent_network: Account<'info, Network>,
     #[account(init, payer=payer, seeds=[b"join_escrow", authority.key.as_ref()], bump , space = JoinEscrow::INIT_SPACE)]
-    join_escrow: Account<'info, Network>,
+    join_escrow: Account<'info, JoinEscrow>,
     system_program: Program<'info, System>
 }
 
