@@ -23,9 +23,10 @@ pub struct RegisterAsSource<'info>{
     #[account(mut)]
     payer: Signer<'info>,
     authority: SystemAccount<'info>,
-    #[account(seeds=[b"source_data", source_name.as_bytes()],bump, seeds::program=reputation_program.key())]
+    #[account(mut,seeds=[b"source_data", source_name.as_bytes()],bump, seeds::program=reputation_program.key())]
     ///CHECK: CHECKED IN CPI
     source_data : UncheckedAccount<'info,>,
+    #[account(mut,seeds=[b"reputation_data"], bump,seeds::program=reputation_program.key())]
     reputation_data: Account<'info, ReputationData>, 
     reputation_program: Program<'info, ReputationProgram>,
     system_program: Program<'info, System>,

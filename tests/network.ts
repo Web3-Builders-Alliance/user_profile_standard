@@ -6,6 +6,7 @@ import {Network} from "../target/types/network";
 import {createRepAccount} from "./instructions/createRepAccount"
 import {createAccount} from "./instructions/network/createAccount"
 import {joinANetwork} from "./instructions/network/joinANetwork"
+import {registerNetworkAsReputationSource} from "./instructions/network/registerNetworkAsSource"
 import {addToNetwork} from "./instructions/network/addToNetwork"
 import {startNetworkNode} from "./instructions/network/startNetworkNode"
 import {initializeReputationDataAccount} from "./instructions/initializeReputationDataAccount"
@@ -34,10 +35,19 @@ before('\n\n\n*************** CREATE REPUTATION DATA ACCOUNT***************\n\n'
   assert.equal(repData.sourcesTally.toNumber(), 0 , 'sources tally should be zero') ;
   assert.equal(repData.reputationAccountsTally.toNumber(),0, "reputation accounts tally is zero");
 
+})
+after('***************It deletes network as source',async ()=>{
   const sourceName = 'network'
   const authority = new anchor.web3.Keypair()
-  const {sourceDataTx,sourceData} = await initializeSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-  console.log(`created source data account: ${sourceDataTx}`)
+  const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
+  console.log(`created source data account: ${deleteSourceDataTx}`)
+}) 
+describe('**************Register network as source ************', () => {
+  it('registers reputation as source' , async () => {
+  const sourceName = 'network';
+  const authority = new anchor.web3.Keypair()
+  const {registerReputationAsSourceTx,sourceData} = await registerNetworkAsReputationSource(payer.payer.publicKey,authority.publicKey,data,sourceName) ;
+  console.log(`created source data account: ${registerReputationAsSourceTx}`)
   console.log(`\nThe source data account is:${sourceData}\n`)
   // source. 
   const sd = await rep_program.account.sourceData.fetch(sourceData);
@@ -47,17 +57,8 @@ before('\n\n\n*************** CREATE REPUTATION DATA ACCOUNT***************\n\n'
   assert.equal(sd.sourceName , sourceName , `source name should be ${sourceName}`) ;
   assert.equal(sd.sourceCount.toNumber(), 0 , "source count should be 0");
   assert.equal(sd.sourceAuthority.toString(), authority.publicKey.toString() , `source authority should be ${authority.publicKey.toString()}`);
-  const repData2  = await rep_program.account.reputationData.fetch(data);  
+  const repData  = await rep_program.account.reputationData.fetch(data);  
   console.log(`\nSources tally in reputation data now ${repData.sourcesTally.toString()}`);
-})
-after('***************It deletes network as source',async ()=>{
-  const sourceName = 'network'
-  const authority = new anchor.web3.Keypair()
-  const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
-  console.log(`created source data account: ${deleteSourceDataTx}`)
-}) 
-describe('**************Register network as source ************', () => {
-  it('registers reputation as source' , () => {
       
   })
 })
