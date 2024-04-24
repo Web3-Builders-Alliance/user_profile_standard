@@ -29,18 +29,24 @@ A program that gives a user reputation credits the more he grows his network
 ### Network Program Accounts 
 
 #### Node 
-    <ul>
-        <li>Keeps a networks' metadata</li>
-    </ul>
+<ul>
+    <li>Keeps a networks' metadata</li>
+</ul>
+
 #### Network Account
-    <ul>
-        <li>Associated with the user, keeps user network infor.</li>
-    </ul>
+
+<ul>
+    <li>Associated with the user, keeps user network infor.</li>
+</ul>
+
 #### Link Data Account 
-    <ul>
-        <li> hash map Account associated with the parent child link in a network </li> 
-    </ul>
+
+<ul>
+    <li> hash map Account associated with the parent child link in a network </li> 
+</ul>
+
 #### Join Escrow Account 
-    <ul>
-        <li> Escrow created in the two way transaction when user requests to join a network and user gets accepted by parent</li>
-    </ul>
+
+<ul>
+    <li> Escrow created in the two way transaction when user requests to join a network and user gets accepted by parent</li>
+</ul>
