@@ -1,4 +1,5 @@
-use anchor_lang::prelude::*; use crate::state::{network::Network};
+use anchor_lang::prelude::*;
+use crate::state::{network::Network};
 use reputation::state::{reputation::Reputation, source_data::SourceData};
 use reputation::program::Reputation as ReputationProgram ;
 pub fn create_account(ctx: Context<CreateAccount>, ) -> Result<()> {

@@ -1,8 +1,16 @@
 pub use create_network_account::*;
 pub use register_network_as_reputation_source::*;
 pub use start_network_node::*;
+pub use exit_network::*;
 pub use add_to_network::*;
 pub use join_a_network::*;
+pub use delete_network_account::*;
+pub use remove_network_node::*;
+pub use remove_from_network::*;
+pub mod delete_network_account;
+pub mod remove_from_network;
+pub mod remove_network_node;
+pub mod exit_network ;
 pub mod join_a_network;
 pub mod add_to_network ;
 pub mod start_network_node ;

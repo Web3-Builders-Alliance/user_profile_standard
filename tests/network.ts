@@ -56,6 +56,11 @@ after('***************It deletes network as source',async ()=>{
   const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.payer.publicKey,authority.publicKey,sourceName) ;
   console.log(`created source data account: ${deleteSourceDataTx}`)
 }) 
+describe('**************Register network as source ************', () => {
+  it('registers reputation as source' , () => {
+      
+  })
+})
 describe('**************create network account*****************',()=>{
   it('creates network account', async ()=>{
     const sourceName = 'network'

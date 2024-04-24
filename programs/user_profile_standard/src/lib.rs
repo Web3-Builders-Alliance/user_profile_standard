@@ -44,7 +44,6 @@ pub struct CreateSocials <'info> {
     pub system_program: Program <'info,System> ,
 }
 
-
 #[account]
 #[derive(InitSpace)]
 pub struct Socials {
