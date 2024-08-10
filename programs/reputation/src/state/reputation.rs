@@ -9,7 +9,7 @@ pub struct Reputation {
     date_created: String,
     slot_time_created: u64,
     token_backed: bool,
-    scurity_level: Level ,
+    security_level: Level ,
     #[max_len(10,20)]
     logs: Vec<String>
 }

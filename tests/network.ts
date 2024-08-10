@@ -178,4 +178,20 @@ describe('************* add to network *****************',()=>{
 
   })
 })
+describe('************* can exit from network *****************',()=>{
+  it('can exit from network', async ()=>{
+    const sourceName = 'network'
+    const parent  = new anchor.web3.Keypair()
+    let date = new Date();
+    let dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    let tokenBacked = false;
+})})
+describe('************* can remove from network *****************',()=>{
+  it('removes from  network', async ()=>{
+    const sourceName = 'network'
+    const parent  = new anchor.web3.Keypair()
+    let date = new Date();
+    let dateString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
+    let tokenBacked = false;
+})})
 

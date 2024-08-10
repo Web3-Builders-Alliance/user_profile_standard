@@ -1,5 +1,5 @@
 [workspace]
-members = [
+members = [ "backend/user_profile_backend",
     "programs/*"
 ]
 
