@@ -26,5 +26,17 @@ Suppose you meet a person at a party who uses network they can tag you whic is e
 yea I know you you are a real person. 
 
 
+## [user_profile_standard](https://github.com/Web3-Builders-Alliance/user_profile_standard/tree/main/programs/user_profile_standard) 
+Suppose you want to store some user information privately onchain, information that is
+private but not necessarily of any security risk. Things like links to social media,
+profile pictures, maybe nationality , gender , education ... basic profile infomation. 
+
+If we deploy a single program online, then the program becomes one big candy store for
+all user profiles. 
+What if we deploy a simple program for every user.
+We can then make a program that can read specific fields from those accounts without
+showing the other fields called [privacy wrapper](https://github.com/Web3-Builders-Alliance/user_profile_standard/tree/main/programs/privacy_wrapper) 
+
+
 
 
