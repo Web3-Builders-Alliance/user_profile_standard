@@ -1,0 +1,20 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.create {
+  width: 80vw ;
+  height: 80vh ;
+  display: ;
+}
+
+.create-button {
+   margin: 5px auto;
+}
+
