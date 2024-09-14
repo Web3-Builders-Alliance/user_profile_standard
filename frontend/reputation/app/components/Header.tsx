@@ -27,8 +27,8 @@ const Header = () => {
 				<Toolbar className={styles.toolbar}>
 					<Stack className={styles.stack} direction='row' spacing={8}>					
 							<Link className={styles.link} href='/'>Home</Link>					
-							<Link className={styles.link} href='/create'>
-                Create
+							<Link className={styles.link} href='/actions'>
+                Actions
 							</Link>										
 							<Link className={styles.link} href='/about'>
 								About

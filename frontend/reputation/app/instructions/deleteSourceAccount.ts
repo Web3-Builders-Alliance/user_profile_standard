@@ -1,13 +1,19 @@
 import * as anchor from "@coral-xyz/anchor";
-import getRepProgram from "../utils/getRepProgram"
+import getRepProgram from "../utils/getRepProgram";
+import { Wallet,} from '@project-serum/anchor';
 
-export const deleteSourceAccount = async (
-  reputation: anchor.web3.PublicKey,
+const deleteSourceAccount = async (
   authority: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
-  sourceName: string
+  sourceName: string,
   w: Wallet
 ) => {
+  const program = getRepProgram(w as Wallet);
+
+  const [reputation] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from('reputation'),authority.toBuffer()],
+    program.programId
+  );
   // Create source account
   const [source] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from('source'), Buffer.from(sourceName),authority.toBuffer()],
@@ -26,4 +32,4 @@ export const deleteSourceAccount = async (
     .rpc();
   return {deleteSourceTx} 
 }
-
+export default deleteSourceAccount;
