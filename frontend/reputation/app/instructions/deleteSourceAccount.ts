@@ -1,14 +1,12 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import {Reputation } from "../../target/types/reputation"
-const provider = anchor.AnchorProvider.env();
-anchor.setProvider(provider);
-const program = anchor.workspace.Reputation as Program<Reputation>;
+import getRepProgram from "../utils/getRepProgram"
+
 export const deleteSourceAccount = async (
   reputation: anchor.web3.PublicKey,
   authority: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
   sourceName: string
+  w: Wallet
 ) => {
   // Create source account
   const [source] = anchor.web3.PublicKey.findProgramAddressSync(

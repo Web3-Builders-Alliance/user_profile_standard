@@ -1,15 +1,18 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import {Reputation } from "../../target/types/reputation"
-const provider = anchor.AnchorProvider.env();
-anchor.setProvider(provider);
-const program = anchor.workspace.Reputation as Program<Reputation>;
-export const createSourceAccount = async (
-  reputation: anchor.web3.PublicKey,
+import getRepProgram from "../utils/getRepProgram"
+import { Wallet,} from '@project-serum/anchor';
+
+const createSourceAccount = async (
   authority: anchor.web3.PublicKey,
   payer: anchor.web3.PublicKey,
-  sourceName: string
+  sourceName: string,
+  w: Wallet
 ) => {
+ const program = getRepProgram(w as Wallet);
+ const [reputation] = anchor.web3.PublicKey.findProgramAddressSync(
+    [Buffer.from('reputation'),authority.toBuffer()],
+    program.programId
+  );
   // Create source account
   const [source] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from('source'), Buffer.from(sourceName),authority.toBuffer()],
@@ -26,5 +29,7 @@ export const createSourceAccount = async (
       payer,
     })
     .rpc();
-  return { source , createSourceTx} 
+  return {createSourceTx, source } 
 }
+
+export default createSourceAccount

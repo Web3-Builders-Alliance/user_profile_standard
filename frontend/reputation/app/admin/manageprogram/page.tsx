@@ -7,10 +7,11 @@ import Button from '@mui/material/Button';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
-import createRepAccount from "../instructions/createRepAccount"
-import getRepProgram from "../utils/getRepProgram"
+import deleteReputationDataAccount from "../../instructions/deleteReputationDataAccount"
+import initializeReputationDataAccount from "../../instructions/initializeReputationDataAccount"
+import getRepProgram from "../../utils/getRepProgram"
 
-const Page =  () => {
+const Page = () => {
   const w = useAnchorWallet() ;
   const program = getRepProgram(w as Wallet);
   const payer = program.provider;
@@ -18,35 +19,29 @@ const Page =  () => {
     [Buffer.from('reputation_data')],
     program.programId
   );
-  const handleCreateSource =  async (event) => {
+  const handleDelete =  async (event) => {
     event.preventDefault();
     if(payer.publicKey) {
-    console.log(`clicked my buttons ${payer.publicKey}`)
-    const date = new Date();
-    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-    const tokenBacked = false;
-      const  authority = payer.publicKey;
-      const {createSourceTx,source} = await createSourceAccount(data, payer.publicKey,authority, datString, tokenBacked,w as Wallet);
-      console.log(`the rep tx ${createSourceTx}`);
+      console.log(`clicked my buttons ${payer.publicKey}`)
+      const {deleteReputationDataTx} = await deleteReputationDataAccount(payer.publicKey,data,w as Wallet);
+      console.log(`the rep tx ${deleteReputationDataTx}`);
     }
   };
-  const handleCreateRep =  async (event) => {
+  const handleInit =  async (event) => {
     event.preventDefault();
     if(payer.publicKey) {
-    console.log(`clicked my buttons ${payer.publicKey}`)
-    const date = new Date();
-    const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
-    const tokenBacked = false;
-      const  authority = payer.publicKey;
-      const {createRepTx,reputation} = await createRepAccount(data, payer.publicKey,authority, datString, tokenBacked,w as Wallet);
-      console.log(`the rep tx ${createRepTx}`);
+      console.log(`clicked my buttons ${payer.publicKey}`)
+      const {initReputationDataTx} = await initializeReputationDataAccount(payer.publicKey,data,w as Wallet);
+      console.log(`the rep tx ${initReputationDataTx}`);
     }
   };
 
   return (
     <div>
-      <Card variant="outlined">
-      <Box><Typography>Create Reputation Source</Typography></Box>
+      <Card>
+        <Box>
+          <Typography>Initialize Reputation Data Account for the whole program</Typography>
+        </Box>
         <Box
           component="form" 
           noValidate
@@ -58,12 +53,11 @@ const Page =  () => {
           }}
         >
           <TextField id="standard-basic" label="authority" variant="standard" />         
-          <Button  onClick={ (e) => handleCreateSource(e)}>Create Source</Button>
+          <Button  onClick={ (e) => handleInit(e)}>Initialize Data Account</Button>
         </Box>
       </Card>
-
       <Card variant="outlined">
-        <Box><Typography>Create Reputation Account</Typography></Box>        
+        <Box><Typography>Delete the Reputation Data Account For the whole program</Typography></Box>        
         <Box
           component="form" 
           noValidate
@@ -75,12 +69,10 @@ const Page =  () => {
           }}
         >
           <TextField id="standard-basic" label="authority" variant="standard" />         
-          <Button  onClick={ (e) => handleCreateRep(e)}>Create Reputation</Button>
+          <Button  onClick={ (e) => handleDelete(e)}>Delete Data Account</Button>
         </Box>
       </Card>
-
     </div>
-  )
-}
+  )}
 
 export default Page 
