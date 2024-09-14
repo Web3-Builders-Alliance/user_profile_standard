@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Oswald:wght@200;300;600;700&display=swap');
+
+.appbar {
+	/* width: 100vw , */
+	/* display: flex ;
+  flex-direction: row ; */
+	height: min(100px, 10vh);
+	overflow: hidden;
+	/* justify-content: space-around;  */
+	/* background-image: linear-gradient(to top, #14372f, #165849, #137c64, #0ca280, #04c99b); */
+	/* background-image: linear-gradient(to top, rgba(137,155,176,.2), rgba(137,155,176,.8)); */
+	/* background-image: linear-gradient(
+		to top,
+		#f9f871,
+		#f9f86f,
+		#f8f76d,
+		#f8f76b,
+		#f7f669
+	); */
+	background-image: radial-gradient(circle, #f1f085, #d2d376, #b4b768, #989c5a, #7d814c);
+}
+.toolbar {
+	/* width: 100vw , */
+	display: flex;
+	flex-direction: row;
+	/* height:min(100px,10vh); */
+	justify-content: flex-end;
+	overflow: hidden;
+	z-index: 600;
+}
+
+.stack {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.link {
+	text-decoration: underline ; 
+  text-decoration-color: transparent ;
+  color : #171A21;
+  font-size: 23px ;
+  transition: all .5s ease ; 
+	font-family: Oswald, Tahoma, sans-serif; 
+	font-weight: 700;
+}
+
+.link:hover {
+	text-decoration: underline ; 
+	/* transform: scale(1.1) rotateZ(1.5deg); */
+	color: #1d212b;
+}
