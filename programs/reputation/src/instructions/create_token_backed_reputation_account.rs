@@ -1,8 +1,8 @@
 use anchor_lang::prelude::*;
 use crate::state::{reputation::Reputation, reputation_data::ReputationData};
 pub fn create_token_backed_reputation_account(ctx: Context<CreateBackedReputation>,date_string: String,) -> Result<()> {
-    ctx.accounts.reputation.create_token_backed(ctx.accounts.authority.key(), date_string);
-    Ok(())
+    ctx.accounts.reputation.create_token_backed(ctx.accounts.authority.key(), date_string)?;
+    ctx.accounts.data.add_rep_account()
 }
 #[derive(Accounts)]
 #[instruction()]

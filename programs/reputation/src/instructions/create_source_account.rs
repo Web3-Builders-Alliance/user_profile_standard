@@ -4,7 +4,6 @@ pub fn create_source_account(ctx: Context<CreateSource>, source_name: String ) -
     ctx.accounts.source.create(source_name, ctx.accounts.authority.key(), ctx.accounts.reputation.key())?;
     ctx.accounts.reputation.add_source()?; 
     // ctx.accounts.source.bump = ctx.bumps.
-    msg!("SOurce created");    
     Ok(())
 }
 #[derive(Accounts)]

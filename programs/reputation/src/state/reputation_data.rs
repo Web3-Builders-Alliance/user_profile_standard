@@ -20,6 +20,21 @@ impl ReputationData {
     }
     pub fn add_source(&mut self) -> Result<()> {
         self.sources_tally = self.sources_tally.checked_add(1).unwrap();
+        self.set_logs("New Source Account Added".to_string())?;
         Ok(())
+    }
+
+    pub fn add_rep_account(&mut self) -> Result<()> {
+        self.reputation_accounts_tally = self.reputation_accounts_tally.checked_add(1).unwrap(); 
+        self.set_logs("New Rep Account Added".to_string())?;
+        Ok(()) 
+    }
+
+    pub fn set_logs(&mut self, log: String) -> Result<()> {
+        if self.logs.len() == 20 {
+           let _ = self.logs.pop();
+        } 
+        self.logs.insert(0,log);
+        Ok(()) 
     }
 }

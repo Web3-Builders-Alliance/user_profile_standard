@@ -29,6 +29,7 @@ impl Reputation {
         self.date_created = date_string ; 
         self.slot_time_created = Clock::get()?.slot;
         self.token_backed = false;
+        self.security_level = Level::Low;
         Ok(())
     }
     pub fn create_token_backed(&mut self, attached_account: Pubkey,date_string: String, ) -> Result<()> {
