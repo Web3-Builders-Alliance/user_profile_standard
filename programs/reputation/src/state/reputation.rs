@@ -10,7 +10,7 @@ pub struct Reputation {
     slot_time_created: u64,
     token_backed: bool,
     security_level: Level ,
-    #[max_len(10,20)]
+    #[max_len(40,20)]
     logs: Vec<String>
 }
 

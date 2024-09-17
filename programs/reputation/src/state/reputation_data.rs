@@ -6,7 +6,7 @@ pub struct ReputationData {
     sources_tally:u64,
     pub initializer: Pubkey ,
     pub slot_time_created: u64,
-    #[max_len(10,20)]
+    #[max_len(40,20)]
     pub logs: Vec<String>
 }
 impl ReputationData {
