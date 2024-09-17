@@ -30,7 +30,7 @@ impl Reputation {
         self.slot_time_created = Clock::get()?.slot;
         self.token_backed = false;
         self.security_level = Level::Low;
-        Ok(())
+        self.set_logs("Non Token Backed Rep Account Created".to_string())
     }
     pub fn create_token_backed(&mut self, attached_account: Pubkey,date_string: String, ) -> Result<()> {
         self.sources_count = 0 ;
@@ -38,28 +38,30 @@ impl Reputation {
         self.date_created = date_string ; 
         self.slot_time_created = Clock::get()?.slot;
         self.token_backed = true;
-        Ok(())
+        self.security_level = Level::Medium;
+        self.set_logs("Token Backed Rep Account Created".to_string())
     }
     pub fn back_with_tokens(&mut self)-> Result<()> {
         self.token_backed= true ; 
-        Ok(())
+        // self.security_level = Level::Medium;
+        self.set_logs("Account Now Token Backed".to_string())
     }
     pub fn remove_backing_tokens(&mut self) -> Result<()> {
-        Ok(())
+        self.set_logs("Account Now Not Token Backed".to_string())
     }
     pub fn add_source(&mut self,) -> Result<()> {
         self.sources_count= match  self.sources_count.checked_add(1){
             Some(v) => v,
             None => return err!(ReputationError::SumLimmit)
         };
-        Ok(())
+        self.set_logs("Source added".to_string())
     }
     pub fn remove_source(&mut self) -> Result<()> {
         self.sources_count= match self.sources_count.checked_sub(1) {
             Some(v) => v ,
             None => return err!(ReputationError::SumLimmit)
         };
-        Ok(())
+        self.set_logs("Source removed".to_string())
     }
     pub fn change_attached_account(&mut self, new_attached_account: Pubkey) -> Result<()> {
         self.attached_account = new_attached_account ;
@@ -68,5 +70,12 @@ impl Reputation {
     ///ToDO: calculate the security Level
     pub fn calculate_security_level()-> Result<()> {
         Ok(())
+    }
+    pub fn set_logs(&mut self, log: String) -> Result<()> {
+        if self.logs.len() == 20 {
+           let _ = self.logs.pop();
+        } 
+        self.logs.insert(0,log);
+        Ok(()) 
     }
 }
