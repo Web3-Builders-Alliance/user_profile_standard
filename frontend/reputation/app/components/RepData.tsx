@@ -1,26 +1,60 @@
 import React, {useState, useEffect} from 'react'
+import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
 import getRepProgram from "../utils/getRepProgram"
+import {PublicKey} from '@solana/web3.js';
+import {
+  Typography,
+  Card,
+} from '@mui/material';
+
+//  enum Level {
+//   High = "High",
+//   Medium = "Medium",
+//   Low= "Low" ,
+// }
+type RepData ={ 
+  sourcesCount: anchor.BN,
+  attachedAccount: PublicKey,
+  dateCreated: string,
+  slotTimeCreated: anchor.BN,
+  tokenBacked: boolean,
+  securityLevel:object, 
+  logs: string[]
+}
 
 const RepData = () => {
+  const [reputation, setReputation] = useState<RepData|null>(null)
   const w = useAnchorWallet() ;
   const program = getRepProgram(w as Wallet);
-  const [data] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from('reputation_data')],
-    program.programId
-  );
 
   useEffect(()=>{
-    const getData = async () => {
-      let data = await program.account.data.fetch(data);
-      console.log(`The data here ${data}`)
+    if (program.provider.publicKey) {
+      const  authority = program.provider.publicKey;
+      const [rep] = anchor.web3.PublicKey.findProgramAddressSync(
+        [Buffer.from('reputation'),authority.toBuffer()],
+        program.programId
+      );
+
+      const getData = async () => {
+        const data:RepData = await program.account.reputation.fetch(rep);
+        console.log(`The data here ${data}`)
+        setReputation(data)
+      }
+      getData();
     }
-    getData();
   },[])
 
   return (
-    <div>RepData</div>
+    <Card>
+      <Typography variant="h5">
+        RepData
+      </Typography>
+      <Typography variant="h5">Sources Count: {reputation ? reputation.sourcesCount.toString() : 0}</Typography>
+      <Typography variant="h5">Security Level: {reputation ? reputation.securityLevel.toString() : "" } </Typography>
+      <Typography variant="h5">Logs: {reputation ? reputation.logs : ""}</Typography>
+    </Card>
   )
 }
 

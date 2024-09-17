@@ -16,6 +16,7 @@ import deleteSourceDataAccount  from '../instructions/deleteSourceDataAccount';
 import initializeSourceDataAccount  from '../instructions/initializeSourceDataAccount';
 import getRepProgram from "../utils/getRepProgram"
 import RepProgData from "../components/RepProgData"
+import RepData from "../components/RepData"
 import { useRouter } from 'next/navigation'
 const Page =  () => {
   const w = useAnchorWallet() ;
@@ -31,9 +32,9 @@ const Page =  () => {
     event.preventDefault();
     if(payer.publicKey) {
       console.log(`clicked my buttons ${payer.publicKey}`)
-      const name = "name";
+      const name = "network";
       const  authority = payer.publicKey;
-      const {createSourceTx,source} = await createSourceAccount(data, authority,payer.publicKey, name ,w as Wallet);
+      const {createSourceTx,source} = await createSourceAccount(authority,payer.publicKey, name ,w as Wallet);
       console.log(`the rep tx ${createSourceTx}`);
       router.refresh()
     }
@@ -134,7 +135,8 @@ const Page =  () => {
       </Card>
 
       <Card variant="outlined">
-        <Box><Typography>Create Reputation Account</Typography></Box>        
+        <Box><Typography>Reputation Account</Typography></Box>        
+        <RepData/>
         <Box
           component="form" 
           noValidate
@@ -150,7 +152,6 @@ const Page =  () => {
           <Button  onClick={ (e) => handleDeleteRep(e)}>Delete Reputation</Button>
         </Box>
       </Card>
-
       <RepProgData/>  
 
     </div>
