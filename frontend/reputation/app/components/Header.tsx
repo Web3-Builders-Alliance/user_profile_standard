@@ -30,6 +30,9 @@ const Header = () => {
 							<Link className={styles.link} href='/actions'>
                 Actions
 							</Link>										
+							<Link className={styles.link} href='/admin/manageprogram'>
+							  Admin	
+							</Link>
 							<Link className={styles.link} href='/about'>
 								About
 							</Link>

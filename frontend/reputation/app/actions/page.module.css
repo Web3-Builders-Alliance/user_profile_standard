@@ -1,0 +1,7 @@
+.container {
+  background-color: red;
+  display: flex ;
+  flex-direction: row;
+  width: min(100%, 80vw);
+  height: auto;
+}

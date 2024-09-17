@@ -11,7 +11,7 @@ export default function Home() {
         <Typography variant="h1" gutterBottom> 
           Create Your Reputation account On solana here!
         </Typography>
-        <Link href="/create">
+        <Link href="/actions">
         <Button className="create-button" size="large" variant="contained">
           <Typography variant="h3">
             Create Reputation
