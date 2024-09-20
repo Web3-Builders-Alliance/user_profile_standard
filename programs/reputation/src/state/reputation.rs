@@ -51,10 +51,13 @@ impl Reputation {
     }
     pub fn add_source(&mut self, source_name: String) -> Result<()> {
         self.sources_count= match  self.sources_count.checked_add(1){
-            Some(v) => v,
+            Some(v) =>{
+                msg!("Added sorce B");
+                v}
             None => return err!(ReputationError::SumLimmit)
         };
         let log = format!("Source added, {}", source_name);
+        msg!("Added sorce B");
         self.set_logs(log)
     }
     pub fn remove_source(&mut self) -> Result<()> {
@@ -74,7 +77,7 @@ impl Reputation {
     }
     pub fn set_logs(&mut self, log: String) -> Result<()> {
         if self.logs.len() == 20 {
-           let _ = self.logs.pop();
+            let _ = self.logs.pop();
         } 
         self.logs.insert(0,log);
         Ok(()) 

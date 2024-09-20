@@ -30,6 +30,7 @@ const RepData = () => {
   const program = getRepProgram(w as Wallet);
 
   useEffect(()=>{
+    console.log("inside rep data effect ");
     if (program.provider.publicKey) {
       const  authority = program.provider.publicKey;
       const [rep] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -39,12 +40,12 @@ const RepData = () => {
 
       const getData = async () => {
         const data:RepData = await program.account.reputation.fetch(rep);
-        console.log(`The data here ${data}`)
+        console.log(`The reputation account ${data}`)
         setReputation(data)
       }
       getData();
     }
-  },[])
+  },[program])
 
   return (
     <Card>
@@ -52,7 +53,7 @@ const RepData = () => {
         RepData
       </Typography>
       <Typography variant="h5">Sources Count: {reputation ? reputation.sourcesCount.toString() : 0}</Typography>
-      <Typography variant="h5">Security Level: {reputation ? reputation.securityLevel.toString() : "" } </Typography>
+      <Typography variant="h5">Security Level: {reputation ? reputation.securityLevel.toString().toString() : "" } </Typography>
       <Typography variant="h5">Logs: {reputation ? reputation.logs : ""}</Typography>
     </Card>
   )

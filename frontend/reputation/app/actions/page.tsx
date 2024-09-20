@@ -68,7 +68,7 @@ const Page =  () => {
     event.preventDefault();
     if(payer.publicKey) {
       console.log(`clicked my buttons ${payer.publicKey}`)
-      const name = "name";
+      const name = "network";
       const  authority = payer.publicKey;
       const {deleteSourceTx} = await deleteSourceAccount(authority,payer.publicKey,name,w as Wallet);
       console.log(`the rep tx ${deleteSourceTx}`);
@@ -79,7 +79,7 @@ const Page =  () => {
     event.preventDefault();
     if(payer.publicKey) {
       console.log(`clicked my buttons ${payer.publicKey}`)
-      const sourceName = "name";
+      const sourceName = "network";
       const  authority = payer.publicKey;
       const {sourceData, sourceDataTx} = await initializeSourceDataAccount(data, payer.publicKey,authority,sourceName,w as Wallet);
       console.log(`the rep tx ${sourceDataTx}`);
@@ -90,7 +90,7 @@ const Page =  () => {
     event.preventDefault();
     if(payer.publicKey) {
       console.log(`clicked my buttons ${payer.publicKey}`)
-      const sourceName = "name";
+      const sourceName = "network";
       const  authority = payer.publicKey;
       const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.publicKey,authority,sourceName,w as Wallet);
       console.log(`the rep tx ${deleteSourceDataTx}`);
