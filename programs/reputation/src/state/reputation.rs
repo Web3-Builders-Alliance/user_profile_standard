@@ -49,12 +49,13 @@ impl Reputation {
     pub fn remove_backing_tokens(&mut self) -> Result<()> {
         self.set_logs("Account Now Not Token Backed".to_string())
     }
-    pub fn add_source(&mut self,) -> Result<()> {
+    pub fn add_source(&mut self, source_name: String) -> Result<()> {
         self.sources_count= match  self.sources_count.checked_add(1){
             Some(v) => v,
             None => return err!(ReputationError::SumLimmit)
         };
-        self.set_logs("Source added".to_string())
+        let log = format!("Source added, {}", source_name);
+        self.set_logs(log)
     }
     pub fn remove_source(&mut self) -> Result<()> {
         self.sources_count= match self.sources_count.checked_sub(1) {
