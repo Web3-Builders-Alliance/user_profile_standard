@@ -29,6 +29,11 @@ impl ReputationData {
         self.set_logs("New Rep Account Added".to_string())?;
         Ok(()) 
     }
+    pub fn remove_rep_account(&mut self) -> Result<()> {
+        self.reputation_accounts_tally = self.reputation_accounts_tally.checked_sub(1).unwrap(); 
+        self.set_logs("Rep Account Deleted".to_string())?;
+        Ok(())
+    }
 
     pub fn set_logs(&mut self, log: String) -> Result<()> {
         if self.logs.len() == 20 {

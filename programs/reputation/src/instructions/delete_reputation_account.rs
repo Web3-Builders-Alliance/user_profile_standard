@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::{reputation::Reputation,reputation_data::ReputationData};
-pub fn delete_reputation_account(_ctx: Context<DeleteReputation>, ) -> Result<()> {
+pub fn delete_reputation_account(ctx: Context<DeleteReputation>, ) -> Result<()> {
+    ctx.accounts.data.remove_rep_account()?;
     Ok(())
 }
 #[derive(Accounts)]
