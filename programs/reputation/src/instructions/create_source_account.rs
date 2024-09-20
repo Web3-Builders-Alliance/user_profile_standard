@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::state::{source::Source,reputation::Reputation,};
 pub fn create_source_account(ctx: Context<CreateSource>, source_name: String ) -> Result<()> {
-    ctx.accounts.source.create(source_name, ctx.accounts.authority.key(), ctx.accounts.reputation.key())?;
+    ctx.accounts.source.create(source_name.clone(), ctx.accounts.authority.key(), ctx.accounts.reputation.key())?;
     ctx.accounts.reputation.add_source(source_name)?; 
     // ctx.accounts.source.bump = ctx.bumps.
     Ok(())
