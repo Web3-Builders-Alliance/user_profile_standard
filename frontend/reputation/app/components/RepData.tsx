@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
@@ -8,29 +8,26 @@ import {
   Typography,
   Card,
 } from '@mui/material';
+import {Reputation } from '../../public/programs/reputation';  
 
-//  enum Level {
-//   High = "High",
-//   Medium = "Medium",
-//   Low= "Low" ,
-// }
-type RepData ={ 
+type data =  {
   sourcesCount: anchor.BN,
   attachedAccount: PublicKey,
   dateCreated: string,
   slotTimeCreated: anchor.BN,
   tokenBacked: boolean,
-  securityLevel:object, 
+  securityLevel: string, 
   logs: string[]
 }
 
+type repData = anchor.IdlAccounts<Reputation>["reputation"]
+type level   = anchor.IdlTypes<Reputation>["Level"]
 const RepData = () => {
-  const [reputation, setReputation] = useState<RepData|null>(null)
+  const [reputation, setReputation] = useState<data|null>(null)
   const w = useAnchorWallet() ;
-  const program = getRepProgram(w as Wallet);
+  const program = useMemo(() => getRepProgram(w as Wallet),[w]);
 
   useEffect(()=>{
-    console.log("inside rep data effect ");
     if (program.provider.publicKey) {
       const  authority = program.provider.publicKey;
       const [rep] = anchor.web3.PublicKey.findProgramAddressSync(
@@ -39,11 +36,16 @@ const RepData = () => {
       );
 
       const getData = async () => {
-        const data:RepData = await program.account.reputation.fetch(rep);
-        console.log(`The reputation account ${data}`)
-        setReputation(data)
-      }
-      getData();
+        const rd: repData = await program.account.reputation.fetch(rep);
+        const l: level = rd.securityLevel; 
+        let levelStr = "" ;
+        for (const lev in l) {
+        levelStr = lev;
+        }
+        const dataToSet: data = {...rd, securityLevel: levelStr}
+        setReputation(dataToSet)
+    }
+     getData();
     }
   },[program])
 

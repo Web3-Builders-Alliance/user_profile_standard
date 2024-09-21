@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import * as anchor from '@project-serum/anchor';
 import { Wallet} from '@project-serum/anchor';
@@ -19,7 +19,7 @@ type RepProgData = {
 const RepProgData = () => {
   const [progData, setProgData] = useState<RepProgData| null>(null); 
   const w = useAnchorWallet() ;
-  const program = getRepProgram(w as Wallet);
+  const program = useMemo(() => getRepProgram(w as Wallet),[w]);
   useEffect(()=>{
     const [data] = anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('reputation_data')],
@@ -33,6 +33,7 @@ const RepProgData = () => {
     getData();
 
   },[program])
+
   return (
     <Card>
       <Typography variant="h4">RepProgData </Typography>
