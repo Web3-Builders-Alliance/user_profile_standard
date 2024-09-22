@@ -21,7 +21,8 @@
 		#f8f76b,
 		#f7f669
 	); */
-	background-image: radial-gradient(circle, #f1f085, #d2d376, #b4b768, #989c5a, #7d814c);
+	/* background-image: radial-gradient(circle, #f1f085, #d2d376, #b4b768, #989c5a, #7d814c); */
+  
 }
 .toolbar {
 	/* width: 100vw , */
@@ -43,7 +44,7 @@
 .link {
 	text-decoration: underline ; 
   text-decoration-color: transparent ;
-  color : #171A21;
+  color : #8596B1;
   font-size: 23px ;
   transition: all .5s ease ; 
 	font-family: Oswald, Tahoma, sans-serif; 
@@ -53,5 +54,5 @@
 .link:hover {
 	text-decoration: underline ; 
 	/* transform: scale(1.1) rotateZ(1.5deg); */
-	color: #1d212b;
+	color: #ABB5B5;
 }

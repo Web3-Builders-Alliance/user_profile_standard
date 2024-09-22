@@ -99,6 +99,7 @@ const Page =  () => {
   };
   return (
     <div className={styles.container}>
+      <Box>
       <Card variant="outlined">
         <Box><Typography>Initialize Source Data</Typography></Box>
         <Box
@@ -152,7 +153,10 @@ const Page =  () => {
           <Button  onClick={ (e) => handleDeleteRep(e)}>Delete Reputation</Button>
         </Box>
       </Card>
+      </Box>
+      <Box>
       <RepProgData/>  
+</Box>
 
     </div>
   )

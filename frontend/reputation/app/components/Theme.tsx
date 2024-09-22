@@ -5,7 +5,7 @@ import {
   ThemeProvider,
   responsiveFontSizes,
 } from '@mui/material/styles';
-import Container from '@mui/material/Container';
+// import Container from '@mui/material/Container';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -48,23 +48,23 @@ let theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#08110F',
+      main: '#8596B1',
     },
     secondary: {
-      main: '#79881D',
+      main: '#DECEC9',
     },
     background: {
-      default: '#1D3C2F',
-      paper: '#1D3C2F',
+      // default: '#1D3C2F',
+      paper: '#DECEC9',
     },
     // background: {
     // 	default: '#899BB0',
     // 	paper: '#899BB0',
     // },
-    text: {
-      primary: '#0D0D0D',
-      secondary: '#F9F871',
-    },
+     // text: {
+    //   primary: '#0D0D0D',
+    //   secondary: '#F9F871',
+    // },
   },
   tertiary: {
     main: '#e84855',
