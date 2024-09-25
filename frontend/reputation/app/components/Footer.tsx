@@ -17,8 +17,8 @@ const Footer = () => {
   return (
     <div className={styles.container}>
       <div className={styles.socials}>
-        <Typography fontWeight='500' className={styles.t} variant='h6'>
-          Contact Us
+        <Typography fontWeight='500'  className={styles.t} variant='h5'>
+          CONTACT US
         </Typography>
         <ButtonGroup
           orientation='vertical'
@@ -26,10 +26,10 @@ const Footer = () => {
           aria-label='text button group'
           className={styles.btg}
           >
-          <Button startIcon={<InstagramIcon />}>Instagram</Button>
-          <Button startIcon={<LinkedInIcon />}>LinkedIn</Button>
-          <Button startIcon={<FacebookIcon />}>Facebook</Button>
-          <Button startIcon={<TwitterIcon />}>Twitter</Button>
+          <Button color="secondary" startIcon={<InstagramIcon />}><Typography variant="h6">Instagram</Typography></Button>
+          <Button  color="secondary" startIcon={<LinkedInIcon />}>{'  '}<Typography variant="h6">LinkedIn</Typography></Button>
+          <Button  color="secondary" startIcon={<FacebookIcon />}><Typography variant="h6">Facebook</Typography></Button>
+          <Button  color="secondary" startIcon={<TwitterIcon />}><Typography variant="h6">Twitter</Typography></Button>
         </ButtonGroup>
       </div>
       <div className={styles.links}>
@@ -42,9 +42,9 @@ const Footer = () => {
           variant='text'
           aria-label='text button group'
           >
-          <Button fullWidth>Actions</Button>
-          <Button fullWidth>About</Button>
-          <Button fullWidth>Home</Button>
+          <Button  color="secondary" fullWidth><Typography>Actions</Typography></Button>
+          <Button  color="secondary" fullWidth><Typography>About</Typography></Button>
+          <Button  color="secondary" fullWidth><Typography>Home</Typography></Button>
         </ButtonGroup>
       </div>
     </div>

@@ -1,7 +1,18 @@
 .container {
-  background-color: red;
+  /* background-color: red; */
   display: flex ;
   flex-direction: row;
   width: min(100%, 80vw);
   height: 95vh;
 }
+
+.mainSection {
+  width: 60vw;
+  height: auto;
+  margin: 1vh 2.5vw;
+  background-color: green;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+}
+

@@ -16,7 +16,9 @@ import deleteSourceDataAccount  from '../instructions/deleteSourceDataAccount';
 import initializeSourceDataAccount  from '../instructions/initializeSourceDataAccount';
 import getRepProgram from "../utils/getRepProgram"
 import RepProgData from "../components/RepProgData"
-import RepData from "../components/RepData"
+import ReputationOptionsCard from '../components/ReputationOptionsCard';
+import SourceDataOptionsCard from '../components/SourceDataOptionsCard';
+import SourceOptionsCard from '../components/SourceOptionsCard'; 
 import { useRouter } from 'next/navigation'
 const Page =  () => {
   const w = useAnchorWallet() ;
@@ -99,65 +101,14 @@ const Page =  () => {
   };
   return (
     <div className={styles.container}>
-      <Box>
-      <Card variant="outlined">
-        <Box><Typography>Initialize Source Data</Typography></Box>
-        <Box
-          component="form" 
-          noValidate
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 2,
-          }}
-        >
-          <TextField id="standard-basic" label="authority" variant="standard" />         
-          <Button  onClick={ (e) => handleInitSourceData(e)}>Create Source Data</Button>
-          <Button  onClick={ (e) => handleDeleteSourceData(e)}>Delete Source Data</Button>
-        </Box>
-      </Card>
-      <Card variant="outlined">
-        <Box><Typography>Create Source Account</Typography></Box>
-        <Box
-          component="form" 
-          noValidate
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 2,
-          }}
-        >
-          <TextField id="standard-basic" label="authority" variant="standard" />         
-          <Button  onClick={ (e) => handleCreateSource(e)}>Create Source</Button>
-          <Button  onClick={ (e) => handleDeleteSource(e)}>Delete Source</Button>
-        </Box>
-      </Card>
-
-      <Card variant="outlined">
-        <Box><Typography>Reputation Account</Typography></Box>        
-        <RepData/>
-        <Box
-          component="form" 
-          noValidate
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 2,
-          }}
-        >
-          <TextField id="standard-basic" label="authority" variant="standard" />         
-          <Button  onClick={ (e) => handleCreateRep(e)}>Create Reputation</Button>
-          <Button  onClick={ (e) => handleDeleteRep(e)}>Delete Reputation</Button>
-        </Box>
-      </Card>
+      <Box className={styles.mainSection}>
+        <SourceOptionsCard handleCreate={handleCreateSource} handleDelete={handleDeleteSource} />
+        <ReputationOptionsCard handleDelete={handleDeleteRep} handleCreate={handleCreateRep}/>
+        <SourceDataOptionsCard handleDelete={handleDeleteSourceData} handleInit={handleInitSourceData}/>
       </Box>
       <Box>
-      <RepProgData/>  
-</Box>
-
+        <RepProgData/>  
+      </Box>
     </div>
   )
 }
