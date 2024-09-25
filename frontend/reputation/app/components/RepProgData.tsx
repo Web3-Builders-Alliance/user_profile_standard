@@ -4,6 +4,8 @@ import * as anchor from '@project-serum/anchor';
 import { Wallet} from '@project-serum/anchor';
 import getRepProgram from "../utils/getRepProgram"
 import {PublicKey} from '@solana/web3.js';
+import styles from './styles/repProgData.module.css'
+import { Box} from '@mui/system';
 import {
   Typography,
   Card,
@@ -35,11 +37,31 @@ const RepProgData = () => {
   },[program])
 
   return (
-    <Card>
-      <Typography variant="h4">RepProgData </Typography>
-      <Typography variant="h6">Total Reputation Accounts: {progData? progData.reputationAccountsTally.toString() : 0}</Typography>
-      <Typography variant="h6">Total Sources: {progData? progData.sourcesTally.toString() : 0}</Typography>
-      <Typography variant="h6">Streaming logs: {progData? progData.logs : ""}</Typography>
+    <Card sx={{bgcolor: "#36231b"}} className={styles.wrapper}>
+      <Box className={styles.heading}><Typography sx={{color:"#72A2EE"}} variant="h5">Reputation Program Data</Typography></Box>
+      <Box className={styles.contents}>
+        <div className={styles.info}>
+          <Typography color="primary" variant="h6">Total Reputation Accounts: <span className={styles.value}> {progData? progData.reputationAccountsTally.toString() : 0}</span></Typography>
+        </div>
+        <div className={styles.info}>
+          <Typography color="primary" variant="h6">Total Sources: <span className={styles.value}> {progData? progData.sourcesTally.toString() : 0}</span></Typography>
+        </div>
+      </Box>
+      <Box className={styles.logs}>
+        <div className={styles.info}>
+          <Typography sx={{color:"#161E1F"}} variant="h6">Streaming logs </Typography>
+        </div>
+        <div>
+        {progData? progData.logs.map((v) =>{
+          return (
+            <div className={styles.log} key={v}>
+              <Typography  color="#161E1F" variant="body2">{`::: ${v.toLowerCase()}`}</Typography>
+            </div>
+          )
+          }) 
+         :""}
+      </div>
+      </Box>
     </Card>
   )
 }
