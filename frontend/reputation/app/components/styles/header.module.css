@@ -45,10 +45,10 @@
 	text-decoration: underline ; 
   text-decoration-color: transparent ;
   color : #8596B1;
-  font-size: 23px ;
+  font-size: 18px ;
   transition: all .5s ease ; 
 	font-family: Oswald, Tahoma, sans-serif; 
-	font-weight: 700;
+	font-weight: 100;
 }
 
 .link:hover {
