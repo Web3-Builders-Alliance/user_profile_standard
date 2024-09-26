@@ -37,3 +37,44 @@
 .text {
 
 }
+
+/* Create Card style*/
+
+/* .createWrapper { */
+/*     display: flex ; */
+/*     justify-content: center ; */
+/*     align-items: center ; */
+/**/
+/* } */
+
+.box {
+ display: flex ;
+  height: 99%;
+  width: 80%;
+ justify-content: space-around;
+}
+.createText {
+ display: flex ;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ margin: 5px;
+}
+
+.repForm{
+  display: flex ;
+  flex-direction: column;
+ align-items: center;
+ justify-content: center;
+  /* background-color: red; */
+}
+.createButtons {
+ display: flex ;
+ justify-content: space-between;
+  /* background-color: red ; */
+  width: 100%;
+  margin: 10px;
+}
+.textField {
+  margin: 10px;
+  }
