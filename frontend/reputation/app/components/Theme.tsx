@@ -48,14 +48,14 @@ let theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#8596B1',
+      main: '#DECEC9',
     },
     secondary: {
-      main: '#DECEC9',
+      main: '#8596B1',
     },
     background: {
       // default: '#1D3C2F',
-      paper: '#DECEC9',
+      paper: '#251C19',
     },
     // background: {
     // 	default: '#899BB0',

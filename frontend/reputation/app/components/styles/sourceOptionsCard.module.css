@@ -1,3 +1,4 @@
 .wrapper{
   width: 350px;
+  grid-area: source;
 }

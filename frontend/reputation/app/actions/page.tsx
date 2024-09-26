@@ -102,8 +102,8 @@ const Page =  () => {
   return (
     <div className={styles.container}>
       <Box className={styles.mainSection}>
-        <SourceOptionsCard handleCreate={handleCreateSource} handleDelete={handleDeleteSource} />
         <ReputationOptionsCard handleDelete={handleDeleteRep} handleCreate={handleCreateRep}/>
+        <SourceOptionsCard handleCreate={handleCreateSource} handleDelete={handleDeleteSource} />
         <SourceDataOptionsCard handleDelete={handleDeleteSourceData} handleInit={handleInitSourceData}/>
       </Box>
       <Box>

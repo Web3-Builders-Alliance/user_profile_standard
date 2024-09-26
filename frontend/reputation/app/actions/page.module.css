@@ -10,9 +10,12 @@
   width: 60vw;
   height: auto;
   margin: 1vh 2.5vw;
-  background-color: green;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-areas:
+    'reputation reputation'
+    'source initialize'
+    ;
   grid-gap: 10px;
+  justify-content: space-around;
 }
 
