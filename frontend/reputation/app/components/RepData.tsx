@@ -22,32 +22,48 @@ type data =  {
 
 type repData = anchor.IdlAccounts<Reputation>["reputation"]
 type level   = anchor.IdlTypes<Reputation>["Level"]
-const RepData = () => {
+type key =  PublicKey|null ;
+
+const RepData = (props) => {
   const [reputation, setReputation] = useState<data|null>(null)
+  const [authority, setAuthority] = useState<key>(null)
+
   const w = useAnchorWallet() ;
   const program = useMemo(() => getRepProgram(w as Wallet),[w]);
 
   useEffect(()=>{
     if (program.provider.publicKey) {
-      const  authority = program.provider.publicKey;
-      const [rep] = anchor.web3.PublicKey.findProgramAddressSync(
-        [Buffer.from('reputation'),authority.toBuffer()],
-        program.programId
-      );
 
-      const getData = async () => {
-        const rd: repData = await program.account.reputation.fetch(rep);
-        const l: level = rd.securityLevel; 
-        let levelStr = "" ;
-        for (const lev in l) {
-        levelStr = lev;
+      if (
+        !props.authority || props.authority === "" ||
+        props.authority.toString().length() < 32 ||
+        props.authority.toString().length() > 44
+
+      ){ 
+        setAuthority(program.provider.publicKey)
+      } else {
+        setAuthority(props.authority)
+      } 
+
+      if (authority) {
+        const [rep] = anchor.web3.PublicKey.findProgramAddressSync(
+          [Buffer.from('reputation'),authority.toBuffer()],
+          program.programId
+        );
+
+        const getData = async () => {
+          const rd: repData = await program.account.reputation.fetch(rep);
+          const l: level = rd.securityLevel; 
+          let levelStr = "" ;
+          for (const lev in l) {
+            levelStr = lev;
+          }
+          const dataToSet: data = {...rd, securityLevel: levelStr}
+          setReputation(dataToSet)
         }
-        const dataToSet: data = {...rd, securityLevel: levelStr}
-        setReputation(dataToSet)
-    }
-     getData();
-    }
-  },[program])
+        getData();
+      }  }
+  },[program,props.authority, authority])
 
   return (
     <Card>
