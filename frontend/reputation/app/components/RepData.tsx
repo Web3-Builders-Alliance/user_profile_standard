@@ -36,13 +36,13 @@ const RepData = (props) => {
 
       if (
         !props.authority || props.authority === "" ||
-        props.authority.toString().length() < 32 ||
-        props.authority.toString().length() > 44
+        props.authority.toString().length < 32 ||
+        props.authority.toString().length > 44
 
       ){ 
         setAuthority(program.provider.publicKey)
       } else {
-        setAuthority(props.authority)
+        setAuthority(new PublicKey(props.authority))
       } 
 
       if (authority) {

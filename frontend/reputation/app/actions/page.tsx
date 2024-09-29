@@ -20,6 +20,8 @@ import ReputationOptionsCard from '../components/ReputationOptionsCard';
 import SourceDataOptionsCard from '../components/SourceDataOptionsCard';
 import SourceOptionsCard from '../components/SourceOptionsCard'; 
 import { useRouter } from 'next/navigation'
+import { PublicKey } from '@solana/web3.js';
+
 const Page =  () => {
   const w = useAnchorWallet() ;
   const router = useRouter();
@@ -30,25 +32,34 @@ const Page =  () => {
     [Buffer.from('reputation_data')],
     program.programId
   );
-  const handleCreateSource =  async (event) => {
-    event.preventDefault();
-    if(payer.publicKey) {
+  const handleCreateSource =  async (event, userId: PublicKey) => {
+    let authority = null ;
+    if (!userId) {     
+      authority = payer.publicKey;
+    }else{ 
+      authority = new PublicKey(userId) 
+    }
+    if(payer.publicKey && authority) {
       console.log(`clicked my buttons ${payer.publicKey}`)
       const name = "network";
-      const  authority = payer.publicKey;
       const {createSourceTx,source} = await createSourceAccount(authority,payer.publicKey, name ,w as Wallet);
       console.log(`the rep tx ${createSourceTx}`);
       router.refresh()
     }
   };
-  const handleCreateRep =  async (event) => {
-    event.preventDefault();
-    if(payer.publicKey) {
+  const handleCreateRep =  async (userId: PublicKey) => {
+    let authority = null ;
+    if (!userId) {     
+      authority = payer.publicKey;
+    }else{ 
+      authority = new PublicKey(userId) 
+    }
+
+    if(payer.publicKey && authority) {
       console.log(`clicked my buttons ${payer.publicKey}`)
       const date = new Date();
       const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
       const tokenBacked = false;
-      const  authority = payer.publicKey;
       const {createRepTx,reputation} = await createRepAccount(data, payer.publicKey,authority, datString, tokenBacked,w as Wallet);
       console.log(`the rep tx ${createRepTx}`);
       router.refresh()
