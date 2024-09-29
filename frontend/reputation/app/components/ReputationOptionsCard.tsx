@@ -107,7 +107,7 @@ const Form = (props) => {
   return( 
     signIn? <SignIn  handleCreate= {handleCreateButton} handleSignIn={searchRep} />:
     create? <Create handleCreate={() => props.handleCreate(userId)} handleSignIn={handleSignInButton}/>:
-    loadRep? <Reputation/>:
+    (loadRep)? <Reputation/>:
         <First handleCreate= {handleCreateButton} handleSignIn={handleSignInButton} />
   )
 

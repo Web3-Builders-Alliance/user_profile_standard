@@ -38,7 +38,7 @@ const RepProgData = () => {
 
   return (
     <Card sx={{bgcolor: "#36231b"}} className={styles.wrapper}>
-      <Box className={styles.heading}><Typography sx={{color:"#72A2EE"}} variant="h5">Reputation Program Data</Typography></Box>
+      <Box className={styles.heading}><Typography sx={{color:"#8596B1"}} variant="h5">Reputation Program Data</Typography></Box>
       <Box className={styles.contents}>
         <div className={styles.info}>
           <Typography color="primary" variant="h6">Total Reputation Accounts: <span className={styles.value}> {progData? progData.reputationAccountsTally.toString() : 0}</span></Typography>
