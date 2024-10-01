@@ -1,6 +1,43 @@
-.cardOne {
+.wrapper {
   width: 350px ;
-  height: 200px;
+  height: min(350px, auto);
   grid-area: initialize;
+  padding: 10px ;
+  padding-top: 15px;
+  padding-bottom: 0px ;
 }
 
+.content {
+  display: flex ;
+  flex-direction: column;
+  width:99% ;
+  height: 99% ;
+  align-items: center ;
+  justify-content: center ;
+
+}
+
+.buttons {
+  display: flex ;
+  justify-content: space-between;
+  width: 70%;
+}
+
+
+.box {
+ display:flex ;
+ flex-direction: column;
+justify-content:center ;
+ width: 100% ;
+ height: calc(100% - 20px);
+}
+
+.createButtons {
+  display: flex ;
+  justify-content: space-between;
+  width: 70%; 
+  margin-top: 10px ;
+}
+.textFields {
+  margin-top: 15px ;
+}

@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useMemo} from 'react'
-import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
 import getRepProgram from "../utils/getRepProgram"
 import {PublicKey} from '@solana/web3.js';
+import * as anchor from '@project-serum/anchor';
 import {
   Typography,
   Card,

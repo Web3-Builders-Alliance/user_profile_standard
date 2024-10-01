@@ -1,26 +1,38 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
 import getRepProgram from "../utils/getRepProgram"
+import * as anchor from '@project-serum/anchor';
+import { PublicKey } from '@solana/web3.js';
+import { Box, Card } from '@mui/material';
+// import styles from "./styles/s
+type sourceData = {
+    sourceName: string ,
+    sourceAuthority: PublicKey ,
+    sourcecount: anchor.BN,
+}
 
-const SourceData = () => {
+const SourceData = (props) => {
+  const [srcData, setSrcData] = useState<sourceData>()
   const w = useAnchorWallet() ;
-  const program = getRepProgram(w as Wallet);
+  const program = useMemo(() => getRepProgram(w as Wallet),[w]);
+
   const [data] = anchor.web3.PublicKey.findProgramAddressSync(
-    [Buffer.from('reputation_data')],
+    [Buffer.from('source_data'), Buffer.from(props.sourceName)],
     program.programId
   );
 
   useEffect(()=>{
     const getData = async () => {
-      let data = await program.account.data.fetch(data);
-      console.log(`The data here ${data}`)
+      const sdata = await program.account.sourceData.fetch(data);
+      console.log(`The data here ${sdata}`)
     }
     getData();
+  },[program, data])
 
-  },[])
   return (
-    <div>SourceData</div>
+  <Card variant="outlined" className={styles.wrapper}>
+  </Card>
   )
 }
 

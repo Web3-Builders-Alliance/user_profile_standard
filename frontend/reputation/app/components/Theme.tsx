@@ -65,14 +65,12 @@ let theme = createTheme({
     //   primary: '#0D0D0D',
     //   secondary: '#F9F871',
     // },
-  },
-  tertiary: {
-    main: '#e84855',
-  },
-  yellow: {
-    main: '#F9F871',
-  },
+  info: {
+    main:"#36231B"
+  }
+}
 });
+
 // "#F34213"
 theme = responsiveFontSizes(theme);
 

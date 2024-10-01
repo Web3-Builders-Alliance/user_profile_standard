@@ -1,10 +1,6 @@
 'use client';
 import React from 'react';
 import styles  from './page.module.css';
-import Typography from '@mui/material/Typography';
-import { Box, Card } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Wallet} from '@project-serum/anchor';
@@ -21,7 +17,7 @@ import SourceDataOptionsCard from '../components/SourceDataOptionsCard';
 import SourceOptionsCard from '../components/SourceOptionsCard'; 
 import { useRouter } from 'next/navigation'
 import { PublicKey } from '@solana/web3.js';
-
+import { Box,} from '@mui/material';
 const Page =  () => {
   const w = useAnchorWallet() ;
   const router = useRouter();
@@ -32,15 +28,19 @@ const Page =  () => {
     [Buffer.from('reputation_data')],
     program.programId
   );
-  const handleCreateSource =  async (event, userId: PublicKey) => {
-    let authority = null ;
-    if (!userId) {     
-      authority = payer.publicKey;
+
+  const checkUID  = (userId: PublicKey): PublicKey => {
+    if (!userId && payer.publicKey) {     
+      return  payer.publicKey;
     }else{ 
-      authority = new PublicKey(userId) 
+      return  new PublicKey(userId) 
     }
-    if(payer.publicKey && authority) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
+  }
+
+
+  const handleCreateSource =  async (userId: PublicKey) => {
+    if(payer.publicKey) {
+      const authority: PublicKey = checkUID(userId);
       const name = "network";
       const {createSourceTx,source} = await createSourceAccount(authority,payer.publicKey, name ,w as Wallet);
       console.log(`the rep tx ${createSourceTx}`);
@@ -48,15 +48,9 @@ const Page =  () => {
     }
   };
   const handleCreateRep =  async (userId: PublicKey) => {
-    let authority = null ;
-    if (!userId) {     
-      authority = payer.publicKey;
-    }else{ 
-      authority = new PublicKey(userId) 
-    }
+    if(payer.publicKey) {
 
-    if(payer.publicKey && authority) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
+    const authority = checkUID(userId);
       const date = new Date();
       const datString = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`
       const tokenBacked = false;
@@ -66,50 +60,42 @@ const Page =  () => {
     }
   };
 
-  const handleDeleteRep =  async (event) => {
-    event.preventDefault();
+  const handleDeleteRep =  async (userId : PublicKey) => {
     if(payer.publicKey) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
-      const  authority = payer.publicKey;
+    const authority = checkUID(userId);
       const {deleteRepTx} = await deleteRepAccount( payer.publicKey,authority,data,w as Wallet);
       console.log(`the rep tx ${deleteRepTx}`);
       router.refresh()
     }
   };
 
-  const handleDeleteSource =  async (event) => {
-    event.preventDefault();
+  const handleDeleteSource =  async (userId : PublicKey) => {
     if(payer.publicKey) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
+    const authority = checkUID(userId);
       const name = "network";
-      const  authority = payer.publicKey;
       const {deleteSourceTx} = await deleteSourceAccount(authority,payer.publicKey,name,w as Wallet);
       console.log(`the rep tx ${deleteSourceTx}`);
       router.refresh()
     }
   };
-  const handleInitSourceData =  async (event) => {
-    event.preventDefault();
+  const handleInitSourceData =  async (userId : PublicKey ,sourceName: string) => {
     if(payer.publicKey) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
-      const sourceName = "network";
-      const  authority = payer.publicKey;
+      const authority = checkUID(userId);
       const {sourceData, sourceDataTx} = await initializeSourceDataAccount(data, payer.publicKey,authority,sourceName,w as Wallet);
       console.log(`the rep tx ${sourceDataTx}`);
       router.refresh()
     }
   };
-  const handleDeleteSourceData =  async (event) => {
-    event.preventDefault();
+  const handleDeleteSourceData =  async (userId: PublicKey) => {
     if(payer.publicKey) {
-      console.log(`clicked my buttons ${payer.publicKey}`)
+      const authority = checkUID(userId);
       const sourceName = "network";
-      const  authority = payer.publicKey;
       const {deleteSourceDataTx} = await deleteSourceDataAccount(data,payer.publicKey,authority,sourceName,w as Wallet);
       console.log(`the rep tx ${deleteSourceDataTx}`);
       router.refresh()
     }
   };
+
   return (
     <div className={styles.container}>
       <Box className={styles.mainSection}>

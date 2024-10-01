@@ -29,7 +29,6 @@ const RepProgData = () => {
     );
     const getData = async () => {
       const d: RepProgData = await program.account.reputationData.fetch(data);
-      console.log(`The data here ${d.logs}`)
       setProgData(d)
     }
     getData();
