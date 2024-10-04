@@ -12,51 +12,86 @@ const SourceOptionsCard = (props) => {
   const [create, setCreate ] = useState(false);
   const [loadSource, setLoadSource] = useState(false);
   const [userId, setUserId] = useState("");
-  useSourceDataAccounts();
+  const options =  useSourceDataAccounts();
 
-const Source = () => {
-  return(
-    <SourceData authority={userId}/>
-  ) 
-}
+  const Source = () => {
+    return(
+      <SourceData authority={userId}/>
+    ) 
+  }
 
-const Search = (props) => {
-  return( 
-    <Card variant="outlined" className={styles.wrapper}>
-      <Box className={styles.box}>
-        <Box className={styles.createText}>
-          <Typography variant="h6" sx={{color: "#8596B1"}} >Already Have</Typography>
-          <Typography  variant="h5" sx={{color: "#72A2EE"}} >Reputation Account</Typography> 
-          <Typography sx={{color: "#8596B1"}} variant="body1" >Sign In</Typography>
-        </Box>        
-        <Form  handleCreate={props.handleCreate} handleSignIn={props.handleSignIn} />
-      </Box>
-    </Card>
-  ) 
-}
+  const Search = (props) => {
+    return( 
+      <Card variant="outlined" className={styles.wrapper}>
+        <Box className={styles.box}>
+          <Box className={styles.createText}>
+            <Typography variant="h6" sx={{color: "#8596B1"}} >Already Have</Typography>
+            <Typography  variant="h5" sx={{color: "#72A2EE"}} >Reputation Account</Typography> 
+            <Typography sx={{color: "#8596B1"}} variant="body1" >Sign In</Typography>
+          </Box>        
+          <Form  handleCreate={props.handleCreate} handleSignIn={props.handleSignIn} />
+        </Box>
+      </Card>
+    ) 
+  }
 
-const Create  = (props) => {
-  return( 
-    <Card variant="outlined" className={styles.wrapper}>
-      <Box className={styles.box}>
-        <Box className={styles.createText}>
-          <Typography variant="h6" sx={{color: "#DECEC9"}} >Create</Typography>
-          <Typography  variant="h5"  sx={{color: "#8596B1"}} >Source Account</Typography> 
-        </Box>        
-        <Form  handleCreate={props.handleCreate} handleSignIn={props.handleSignIn} />
-      </Box>
-    </Card>
-  ) 
-}
+  const Create  = (props) => {
+    return( 
+      <Card variant="outlined" className={styles.wrapper}>
+        <Box className={styles.box}>
+          <Box className={styles.createText}>
+            <Typography variant="h6" sx={{color: "#DECEC9"}} >Create</Typography>
+            <Typography  variant="h5"  sx={{color: "#8596B1"}} >Source Account</Typography> 
+          </Box>        
+          <Box className={styles.repForm}>
+            <Box component="form" className={styles.textFields}>
+              <Typography variant="body1" sx={{color: "#DECEC9"}}> Authority ID</Typography> 
+              <TextField
+                select
+                label="Source Name"
+                defaultValue=""
+                slotProps={{
+                  select: {
+                    native: true,
+                  },
+                }}
+                helperText="Select the Source For your Reputation"
+                variant="filled"
+              >
+                {options.map((option, i) => (
+                  <option key={option.sourceName + i} value={option.sourceName}>
+                    {option.sourceName}
+                  </option>
+                ))}
+              </TextField>
+              <TextField
+                value={userId}
+                onChange= {(e) => { e.preventDefault(); setUserId(e.target.value)}}
+                id="standard-basic"
+                label="authority"
+                variant="filled"
+                sx= {{backgroundColor:"#8596B1", marginTop: "10px"}}
+                color="info"
+              />         
+            </Box>
+            <Box className={styles.createButtons}>
+              <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
+              <Button size='small' onClick={ (e) =>props.handleCreate(e)}>Initialize</Button>
+            </Box>
+          </Box>
+        </Box>
+      </Card>
+    ) 
+  }
 
-const First = (props) => {
-  return( 
-    <Card variant="outlined" className={styles.wrapper}>
+  const First = (props) => {
+    return( 
+      <Card variant="outlined" className={styles.wrapper}>
         <Box className={styles.content}>
           <Box className={styles.text}>
-             <Typography sx={{color: "#DECEC9"}} variant="h5">Sources</Typography>
+            <Typography sx={{color: "#DECEC9"}} variant="h5">Sources</Typography>
             <Typography sx={{color: "#8596B1"}} variant="body1">
-                Are Community Provided.
+              Are Community Provided.
             </Typography>
             <Typography sx={{color: "#8596B1"}} variant="body1">Create Soucers to gain More </Typography>
             <Typography sx={{color: "#8596B1"}} variant="body1">Reputation</Typography>
@@ -68,23 +103,23 @@ const First = (props) => {
             <Button size="large" onClick={ (e) =>props.handleCreate(e)}>Create</Button>
           </Box>
         </Box>
-    </Card>
-  ) 
-}
+      </Card>
+    ) 
+  }
 
-const Form = (props) => {
-  return( <Box className={styles.repForm}>
-    <Box component="form" className={styles.textField}>
-      <Typography variant="body2" sx={{color: "#DECEC9"}}>Enter Authority ID</Typography> 
-      <TextField value={userId} onChange= {(e) => setUserId(e.target.value)} id="standard-basic" label="authority" variant="standard" />         
+  const Form = (props) => {
+    return( <Box className={styles.repForm}>
+      <Box component="form" className={styles.textField}>
+        <Typography variant="body2" sx={{color: "#DECEC9"}}>Enter Authority ID</Typography> 
+        <TextField value={userId} onChange= {(e) => setUserId(e.target.value)} id="standard-basic" label="authority" variant="standard" />         
+      </Box>
+      <Box className={styles.createButtons}>
+        <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
+        <Button size='small' onClick={ (e) =>props.handleCreate(e)}>Create</Button>
+      </Box>
     </Box>
-    <Box className={styles.createButtons}>
-      <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
-      <Button size='small' onClick={ (e) =>props.handleCreate(e)}>Create</Button>
-    </Box>
-  </Box>
-  )
-}
+    )
+  }
 
   const handleSearchSourceButton = (e) =>{ 
     setCreate(false)
@@ -103,10 +138,10 @@ const Form = (props) => {
 
   return (
     search? <Search  handleCreate={handleCreateButton} handleSignIn={searchSource} />:
-    create? <Create handleCreate={() => props.handleCreate(userId)} handleSignIn={handleSearchSourceButton}/>:
-    loadSource? <Source/>:
-        <First handleCreate= {handleCreateButton} handleSearchSource={handleSearchSourceButton} />
-    )
+      create? <Create handleCreate={() => props.handleCreate(userId)} handleSignIn={handleSearchSourceButton}/>:
+        loadSource? <Source/>:
+          <First handleCreate= {handleCreateButton} handleSearchSource={handleSearchSourceButton} />
+  )
 }
 
 export default SourceOptionsCard

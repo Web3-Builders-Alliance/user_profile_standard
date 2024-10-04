@@ -1,6 +1,6 @@
 .wrapper {
   width: 350px ;
-  height: 200px;
+  height: min(auto, 350px);
   grid-area: source;
   padding: 10px ;
   padding-top: 15px;
@@ -35,4 +35,8 @@
   justify-content: space-between;
   width: 70%; 
   margin-top: 10px ;
+}
+
+.textFields {
+  margin-top: 15px ;
 }

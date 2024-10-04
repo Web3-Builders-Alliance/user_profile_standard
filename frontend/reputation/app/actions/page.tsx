@@ -38,10 +38,9 @@ const Page =  () => {
   }
 
 
-  const handleCreateSource =  async (userId: PublicKey) => {
+  const handleCreateSource =  async (userId: PublicKey , name: string) => {
     if(payer.publicKey) {
       const authority: PublicKey = checkUID(userId);
-      const name = "network";
       const {createSourceTx,source} = await createSourceAccount(authority,payer.publicKey, name ,w as Wallet);
       console.log(`the rep tx ${createSourceTx}`);
       router.refresh()
