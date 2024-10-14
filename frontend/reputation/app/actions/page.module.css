@@ -3,6 +3,7 @@
   display: flex ;
   flex-direction: row;
   width: min(100%, 80vw);
+  margin-bottom: 25px;
   height: 95vh;
 }
 

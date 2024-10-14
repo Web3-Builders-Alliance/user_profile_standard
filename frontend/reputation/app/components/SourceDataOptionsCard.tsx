@@ -3,6 +3,8 @@ import Typography from '@mui/material/Typography';
 import { Box, Card } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 import styles from './styles/sourceDataOptionsCard.module.css';
 import SourceData  from './SourceData';
 
@@ -31,6 +33,7 @@ const SourceDataOptionsCard = (props) => {
           <Box className={styles.repForm}>
             <Box component="form" className={styles.textFields}>
               <Typography variant="body1" sx={{color: "#DECEC9"}}>Source Name</Typography> 
+              <FormControl color="secondary" className={styles.formControl} sx={{ m: 1, width: 300 }}>
               <TextField
                 value={srcName} 
                 onChange= {(e) => { e.preventDefault(); setSrcName(e.target.value)}}
@@ -40,6 +43,7 @@ const SourceDataOptionsCard = (props) => {
                 sx= {{backgroundColor:"#8596B1", marginTop: "10px"}}
                 color="info"
               />         
+              </FormControl>
             </Box>
             <Box className={styles.createButtons}>
               <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
@@ -62,6 +66,7 @@ const SourceDataOptionsCard = (props) => {
           <Box className={styles.repForm}>
             <Box component="form" className={styles.textFields}>
               <Typography variant="body1" sx={{color: "#DECEC9"}}> Authority ID</Typography> 
+              <FormControl color="secondary" className={styles.formControl} sx={{ m: 1, width: 300 }}>
               <TextField
                 value={userId}
                 onChange= {(e) => { e.preventDefault(); setUserId(e.target.value)}}
@@ -71,7 +76,10 @@ const SourceDataOptionsCard = (props) => {
                 sx= {{backgroundColor:"#8596B1", marginTop: "10px"}}
                 color="info"
               />         
+              </FormControl>
               <Typography variant="body1" sx={{color: "#DECEC9"}}>Source Name</Typography> 
+
+              <FormControl color="secondary" className={styles.formControl} sx={{ m: 1, width: 300 }}>
               <TextField
                 value={srcName} 
                 onChange= {(e) => { e.preventDefault(); setSrcName(e.target.value)}}
@@ -81,6 +89,7 @@ const SourceDataOptionsCard = (props) => {
                 sx= {{backgroundColor:"#8596B1", marginTop: "10px"}}
                 color="info"
               />         
+              </FormControl>
             </Box>
             <Box className={styles.createButtons}>
               <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>

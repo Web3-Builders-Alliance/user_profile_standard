@@ -5,7 +5,7 @@
   margin: 10px;
   padding: 10px;
   margin-top: auto;
-  background-image: linear-gradient(to right top, #251c19, #221d17, #1e1e17, #1a1f19, #171f1c, #171f1c, #171f1c, #171f1c, #1a1f19, #1e1e17, #221d17, #251c19);
+  background-image: #251C19;
   width: 100%;
   height: auto;
   z-index: 4;

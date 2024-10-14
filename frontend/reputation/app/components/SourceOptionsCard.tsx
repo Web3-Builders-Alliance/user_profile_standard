@@ -3,6 +3,10 @@ import Typography from '@mui/material/Typography';
 import { Box, Card } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 import styles from './styles/sourceOptionsCard.module.css';
 import SourceData from './SourceData';
 import useSourceDataAccounts from './hooks/useSourceDataAccounts';
@@ -12,7 +16,9 @@ const SourceOptionsCard = (props) => {
   const [create, setCreate ] = useState(false);
   const [loadSource, setLoadSource] = useState(false);
   const [userId, setUserId] = useState("");
-  const options =  useSourceDataAccounts();
+  const [source, setSource] = React.useState('');
+  // const options =  useSourceDataAccounts();
+  const options = [{sourceName:"Network"}, {sourceName:"Health"}, {sourceName:"Norton"}]
 
   const Source = () => {
     return(
@@ -29,7 +35,44 @@ const SourceOptionsCard = (props) => {
             <Typography  variant="h5" sx={{color: "#72A2EE"}} >Reputation Account</Typography> 
             <Typography sx={{color: "#8596B1"}} variant="body1" >Sign In</Typography>
           </Box>        
-          <Form  handleCreate={props.handleCreate} handleSignIn={props.handleSignIn} />
+          <Box className={styles.repForm}>
+            <Box component="form" className={styles.textFields}>
+              <Typography variant="body1" sx={{color: "#DECEC9"}}> Authority ID</Typography> 
+              <FormControl color="secondary" className={styles.formControl} sx={{ m: 1, width: 300 }}>
+                <InputLabel id="demo-multiple-checkbox-label">Select A Source</InputLabel>
+                <Select
+                  sx={{backgroundColor: "#8596B1"}}
+                  labelId="Select Source from List"
+                  className={styles.select}
+                  value={source}
+                  label="Select A Source"
+                  onChange={handleSelectOption}
+                  color="secondary"
+                >
+                  {options.map((option, i) => (
+                    <MenuItem
+                      sx={{backgroundColor: "#8596B1"}}
+                      className={styles.tray}
+                      key={option.sourceName + i} value={option.sourceName}>
+                      {option.sourceName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant="filled" className={styles.formControl} sx={{ m: 1, width: 300 }}>
+              <TextField
+                value={userId}
+                onChange= {(e) => { e.preventDefault(); setUserId(e.target.value)}}
+                label="authority"
+                sx= {{backgroundColor:"#8596B1"}}
+              />         
+              </FormControl>
+            </Box>
+            <Box className={styles.createButtons}>
+              <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
+              <Button size='small' onClick={ (e) =>props.handleCreate(e)}>Initialize</Button>
+            </Box>
+          </Box>
         </Box>
       </Card>
     ) 
@@ -45,34 +88,37 @@ const SourceOptionsCard = (props) => {
           </Box>        
           <Box className={styles.repForm}>
             <Box component="form" className={styles.textFields}>
+
+              <Typography variant="body1" sx={{color: "#DECEC9"}}>Select Source</Typography> 
+              <FormControl color="secondary" className={styles.formControl} sx={{ m: 1, width: 300 }}>
+                <Select
+                  labelId="Select Source from List"
+                  sx={{backgroundColor: "#8596B1"}}
+                  className={styles.select}
+                  value={source}
+                  label="Select A Source"
+                  onChange={handleSelectOption}
+                  color="secondary"
+                >
+                  {options.map((option, i) => (
+                    <MenuItem
+                      sx={{backgroundColor: "#8596B1"}}
+                      className={styles.tray}
+                      key={option.sourceName + i} value={option.sourceName}>
+                      {option.sourceName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <Typography variant="body1" sx={{color: "#DECEC9"}}> Authority ID</Typography> 
-              <TextField
-                select
-                label="Source Name"
-                defaultValue=""
-                slotProps={{
-                  select: {
-                    native: true,
-                  },
-                }}
-                helperText="Select the Source For your Reputation"
-                variant="filled"
-              >
-                {options.map((option, i) => (
-                  <option key={option.sourceName + i} value={option.sourceName}>
-                    {option.sourceName}
-                  </option>
-                ))}
-              </TextField>
+              <FormControl variant="filled" className={styles.formControl} sx={{ m: 1, width: 300 }}>
               <TextField
                 value={userId}
                 onChange= {(e) => { e.preventDefault(); setUserId(e.target.value)}}
-                id="standard-basic"
                 label="authority"
-                variant="filled"
-                sx= {{backgroundColor:"#8596B1", marginTop: "10px"}}
-                color="info"
+                sx= {{backgroundColor:"#8596B1"}}
               />         
+              </FormControl>
             </Box>
             <Box className={styles.createButtons}>
               <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
@@ -107,20 +153,9 @@ const SourceOptionsCard = (props) => {
     ) 
   }
 
-  const Form = (props) => {
-    return( <Box className={styles.repForm}>
-      <Box component="form" className={styles.textField}>
-        <Typography variant="body2" sx={{color: "#DECEC9"}}>Enter Authority ID</Typography> 
-        <TextField value={userId} onChange= {(e) => setUserId(e.target.value)} id="standard-basic" label="authority" variant="standard" />         
-      </Box>
-      <Box className={styles.createButtons}>
-        <Button size='small' onClick={ (e) => props.handleSignIn(e)}>Search</Button>
-        <Button size='small' onClick={ (e) =>props.handleCreate(e)}>Create</Button>
-      </Box>
-    </Box>
-    )
-  }
-
+   const handleSelectOption = (event: SelectChangeEvent) => {
+    setSource(event.target.value as string);
+  };
   const handleSearchSourceButton = (e) =>{ 
     setCreate(false)
     setSearch(true)
@@ -138,7 +173,7 @@ const SourceOptionsCard = (props) => {
 
   return (
     search? <Search  handleCreate={handleCreateButton} handleSignIn={searchSource} />:
-      create? <Create handleCreate={() => props.handleCreate(userId)} handleSignIn={handleSearchSourceButton}/>:
+      create? <Create handleCreate={() => props.handleCreate(userId,source)} handleSignIn={handleSearchSourceButton}/>:
         loadSource? <Source/>:
           <First handleCreate= {handleCreateButton} handleSearchSource={handleSearchSourceButton} />
   )
